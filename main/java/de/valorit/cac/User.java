@@ -1,6 +1,7 @@
 package de.valorit.cac;
 
 import de.valorit.cac.checks.Module;
+import de.valorit.cac.utils.Permissions;
 import de.valorit.cac.utils.packets.PacketVersionManager;
 import de.valorit.cac.utils.packets.packetreader.PacketReader;
 import org.bukkit.entity.Player;
@@ -17,6 +18,7 @@ public class User {
     private boolean usingBow;
     private boolean inventoryOpen = false;
     private boolean attack = true;
+    private boolean receivesNotifications = false;
 
     private long bowStarted = -1;
     private final long JOIN_TIME;
@@ -30,6 +32,10 @@ public class User {
 
         eating = false;
         usingBow = false;
+
+        if(p.hasPermission(Permissions.NOTIFY) && Config.isReceivingNotifications(p)) {
+            receivesNotifications = true;
+        }
 
         reader = PacketVersionManager.getPacketReader();
         reader.inject(p);
@@ -47,6 +53,10 @@ public class User {
         return attack;
     }
 
+    public boolean isReceivesNotifications() {
+        return receivesNotifications;
+    }
+
     public void setUsingBow(boolean using) {
         this.usingBow = using;
         if(using) {
@@ -60,6 +70,11 @@ public class User {
 
     public void setCanAttack(boolean value) {
         this.attack = value;
+    }
+
+    public void setReceivesNotifications(boolean value) {
+        Config.setReceivesNotifications(p, value);
+        this.receivesNotifications = value;
     }
 
     public void incrementLevel(Module module) {

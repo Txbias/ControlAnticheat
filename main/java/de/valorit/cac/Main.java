@@ -42,6 +42,7 @@ public class Main extends JavaPlugin {
 
 
         Config.loadConfig();
+        Config.loadSettings();
         resultsManager.handleCheckResults();
 
         killaura.enableChecks();

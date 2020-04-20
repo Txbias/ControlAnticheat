@@ -24,11 +24,15 @@ public class CacCommand implements CommandExecutor {
             } else if(args.length == 1 && args[0].equalsIgnoreCase("reload")) {
                 //Reloads the config
                 return handleReload(sender, args);
-            } else {
+            } else if(args.length == 1 && args[0].equalsIgnoreCase("notify")) {
+                //Disables notifications for a staff member
+                return handleNotify(sender, args);
+            }
+            else {
                 if(sender instanceof Player) {
                     Player p = (Player) sender;
                     if(!p.hasPermission(Permissions.ADMIN) && !p.hasPermission(Permissions.RELOAD) && !p.isOp() &&
-                            !p.hasPermission(Permissions.INFO)) {
+                            !p.hasPermission(Permissions.INFO) && !p.hasPermission(Permissions.NOTIFY)) {
                         Utils.sendNoPerm(p);
                         return false;
                     }
@@ -37,6 +41,7 @@ public class CacCommand implements CommandExecutor {
                 String message = "§7-------------§6CAC - Help§7-------------\n" +
                         "§6/cac info [name]§7: Shows which cheats were detected for a player\n" +
                         "§6/cac reload§7: Reloads the config\n" +
+                        "§6/cac notify§7: Toggles your notifications\n" +
                         "§7-------------§6CAC - Help§7-------------\n";
                 sender.sendMessage(message);
             }
@@ -104,6 +109,28 @@ public class CacCommand implements CommandExecutor {
         Config.reloadConfig();
         Utils.sendMessage(sender, "Config reloaded.");
 
+        return true;
+    }
+
+
+    private boolean handleNotify(CommandSender sender, String[] args){
+        if(!(sender instanceof Player)) {
+            Utils.sendMessageToConsole(sender, "You need to be a player to be able to do that!");
+            return false;
+        }
+        Player p = (Player) sender;
+        if(!p.hasPermission(Permissions.NOTIFY) && !p.hasPermission(Permissions.ADMIN) && !p.isOp()) {
+            Utils.sendNoPerm(p);
+            return false;
+        }
+        User user = CheckResultsManager.getUser(p);
+        if(user.isReceivesNotifications()) {
+            user.setReceivesNotifications(false);
+            Utils.sendMessage(p, "You notifications are now disabled.");
+        } else {
+            user.setReceivesNotifications(true);
+            Utils.sendMessage(p, "You notifications are now enabled.");
+        }
         return true;
     }
 
