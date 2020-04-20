@@ -38,7 +38,7 @@ public class GlideCheck {
         }
 
 
-        if(distance == 0 && vectorDistance != 0 && p.getFallDistance() != 0) {
+        if(distance == 0 && vectorDistance != 0 && p.getFallDistance() != 0 && p.getVelocity().getY() < -0.6) {
             //Player is hacking
             p.teleport(from);
             PlayerUtils.movePlayerDown(p);
@@ -52,7 +52,7 @@ public class GlideCheck {
         }
 
 
-        if(distance < 0.17d && distance != 0 && Utils.round(distance) != -0.08 && Utils.round(distance) != -0.04) {
+        if(distance < 0.17d && distance != 0 && p.getVelocity().getY() < 0 && p.getVelocity().getY() > -0.2) {
             if(lastDistance == distance) {
                 //Player is hacking
                 p.teleport(from);
