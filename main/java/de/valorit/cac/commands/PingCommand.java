@@ -1,5 +1,6 @@
 package de.valorit.cac.commands;
 
+import de.valorit.cac.utils.Permissions;
 import de.valorit.cac.utils.Utils;
 import de.valorit.cac.utils.packets.PacketVersionManager;
 import org.bukkit.Bukkit;
@@ -16,7 +17,7 @@ public class PingCommand implements CommandExecutor {
         if(label.equalsIgnoreCase("ping")) {
             if (sender instanceof Player) {
                 Player p = (Player) sender;
-                if(p.isOp() || p.hasPermission("cac.ping") || p.hasPermission("cac.*")) {
+                if(p.isOp() || p.hasPermission(Permissions.PING) || p.hasPermission(Permissions.ADMIN)) {
                      if(args.length == 0) {
                          //Player asks for own ping
                          Utils.sendMessage(p, "Your ping: §6" + PacketVersionManager.getCraftPlayerManager().getPing(p) + "ms");

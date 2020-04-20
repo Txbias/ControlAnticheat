@@ -5,6 +5,7 @@ import de.valorit.cac.checks.CheckResult;
 import de.valorit.cac.checks.CheckResultsManager;
 import de.valorit.cac.checks.Module;
 import de.valorit.cac.utils.GameEvent;
+import de.valorit.cac.utils.Permissions;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
@@ -20,7 +21,7 @@ public class Blink {
         User user = CheckResultsManager.getUser(p);
         long joinTime = user.getJoinTime();
 
-        if(p.hasPermission("cac.bypass")) {
+        if(p.hasPermission(Permissions.BYPASS)) {
             return;
         }
 

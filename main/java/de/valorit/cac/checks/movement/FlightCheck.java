@@ -2,6 +2,7 @@ package de.valorit.cac.checks.movement;
 
 import de.valorit.cac.checks.CheckResult;
 import de.valorit.cac.checks.Module;
+import de.valorit.cac.utils.Permissions;
 import de.valorit.cac.utils.PlayerUtils;
 import de.valorit.cac.utils.Utils;
 import org.bukkit.GameMode;
@@ -30,7 +31,7 @@ public class FlightCheck {
         double distance = vec.distance(from.toVector());
 
         if(p.getGameMode() == GameMode.CREATIVE || p.getAllowFlight() || p.isInsideVehicle() || PlayerUtils.isInLiquid(p) ||
-            p.hasPermission("cac.bypass")) {
+            p.hasPermission(Permissions.BYPASS)) {
             lastDistance = Utils.round(distance);
             lastDifferenceY = differenceY;
             return PASS;

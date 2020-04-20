@@ -2,6 +2,7 @@ package de.valorit.cac.checks.player;
 
 import de.valorit.cac.checks.CheckResult;
 import de.valorit.cac.checks.Module;
+import de.valorit.cac.utils.Permissions;
 import de.valorit.cac.utils.PlayerUtils;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -18,7 +19,7 @@ public class NoFall {
 
         Player p = e.getPlayer();
 
-        if(p.hasPermission("cac.bypass")) {
+        if(p.hasPermission(Permissions.BYPASS)) {
            lastFallDistance = p.getFallDistance();
            lastHealth = p.getHealth();
            return PASS;

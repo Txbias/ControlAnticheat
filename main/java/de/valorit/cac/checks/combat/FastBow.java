@@ -5,6 +5,7 @@ import de.valorit.cac.User;
 import de.valorit.cac.checks.CheckResult;
 import de.valorit.cac.checks.CheckResultsManager;
 import de.valorit.cac.checks.Module;
+import de.valorit.cac.utils.Permissions;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
@@ -23,7 +24,7 @@ public class FastBow {
         }
         Player p = (Player) e.getEntity();
 
-        if(p.hasPermission("cac.bypass")) {
+        if(p.hasPermission(Permissions.BYPASS)) {
             return PASS;
         }
 

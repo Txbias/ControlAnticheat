@@ -3,6 +3,7 @@ package de.valorit.cac.commands;
 import de.valorit.cac.Config;
 import de.valorit.cac.User;
 import de.valorit.cac.checks.CheckResultsManager;
+import de.valorit.cac.utils.Permissions;
 import de.valorit.cac.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -26,7 +27,8 @@ public class CacCommand implements CommandExecutor {
             } else {
                 if(sender instanceof Player) {
                     Player p = (Player) sender;
-                    if(!p.hasPermission("cac.*") && !p.hasPermission("cac.reload") && !p.isOp() && !p.hasPermission("cac.info")) {
+                    if(!p.hasPermission(Permissions.ADMIN) && !p.hasPermission(Permissions.RELOAD) && !p.isOp() &&
+                            !p.hasPermission(Permissions.INFO)) {
                         Utils.sendNoPerm(p);
                         return false;
                     }
@@ -47,7 +49,7 @@ public class CacCommand implements CommandExecutor {
         //Displays info about a player
         if(sender instanceof Player) {
             Player p = (Player) sender;
-            if(!p.hasPermission("cac.*") && !p.hasPermission("cac.info") && !p.isOp()) {
+            if(!p.hasPermission(Permissions.ADMIN) && !p.hasPermission(Permissions.INFO) && !p.isOp()) {
                 Utils.sendNoPerm(p);
                 return false;
             }
@@ -93,7 +95,7 @@ public class CacCommand implements CommandExecutor {
     private boolean handleReload(CommandSender sender, String[] args) {
         if(sender instanceof  Player) {
             Player p = (Player) sender;
-            if(!p.hasPermission("cac.*") && !p.hasPermission("cac.reload") && !p.isOp()) {
+            if(!p.hasPermission(Permissions.ADMIN) && !p.hasPermission(Permissions.RELOAD) && !p.isOp()) {
                 Utils.sendNoPerm(p);
                 return false;
             }

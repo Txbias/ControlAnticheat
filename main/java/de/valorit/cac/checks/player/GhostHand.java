@@ -2,6 +2,7 @@ package de.valorit.cac.checks.player;
 
 import de.valorit.cac.checks.CheckResult;
 import de.valorit.cac.checks.Module;
+import de.valorit.cac.utils.Permissions;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -19,7 +20,7 @@ public class GhostHand {
         Player p = e.getPlayer();
         Block b = e.getClickedBlock();
 
-        if(p.hasPermission("cac.bypass")) {
+        if(p.hasPermission(Permissions.BYPASS)) {
             return PASS;
         }
         if(e.getAction() != Action.RIGHT_CLICK_BLOCK) {

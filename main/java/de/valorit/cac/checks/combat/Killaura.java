@@ -4,6 +4,7 @@ import de.valorit.cac.Main;
 import de.valorit.cac.checks.CheckResult;
 import de.valorit.cac.checks.Module;
 import de.valorit.cac.utils.GameEvent;
+import de.valorit.cac.utils.Permissions;
 import de.valorit.cac.utils.packets.PacketVersionManager;
 import de.valorit.cac.utils.packets.npc.NPC;
 import org.bukkit.Bukkit;
@@ -42,7 +43,7 @@ public class Killaura {
     public void enableChecks() {
         Bukkit.getScheduler().runTaskTimerAsynchronously(Main.getInstance(), () -> {
             for(Player p : PLAYERS.keySet()) {
-                if(p.hasPermission("cac.bypass")) {
+                if(p.hasPermission(Permissions.BYPASS)) {
                     continue;
                 }
                 if(!CHECKED.contains(p)) {

@@ -2,6 +2,7 @@ package de.valorit.cac.checks.player;
 
 import de.valorit.cac.checks.CheckResult;
 import de.valorit.cac.checks.Module;
+import de.valorit.cac.utils.Permissions;
 import de.valorit.cac.utils.PlayerUtils;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -18,6 +19,10 @@ public class Fucker {
 
         Block b = e.getBlock();
         Block target = p.getTargetBlock(null, 5);
+
+        if(p.hasPermission(Permissions.BYPASS)) {
+            return PASS;
+        }
 
         if(!(target.getType() == b.getType()) && !(PlayerUtils.isLiquid(target))) {
             //Player is hacking

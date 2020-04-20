@@ -2,6 +2,7 @@ package de.valorit.cac.checks.movement;
 
 import de.valorit.cac.checks.CheckResult;
 import de.valorit.cac.checks.Module;
+import de.valorit.cac.utils.Permissions;
 import de.valorit.cac.utils.PlayerUtils;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -26,7 +27,7 @@ public class SpeedCheck {
         Vector vec = to.toVector();
         double vectorDistance = vec.distance(from.toVector());
 
-        if(p.hasPermission("cac.bypass")) {
+        if(p.hasPermission(Permissions.BYPASS)) {
             return PASS;
         }
 

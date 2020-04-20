@@ -3,6 +3,7 @@ package de.valorit.cac.checks.player;
 import de.valorit.cac.Config;
 import de.valorit.cac.checks.CheckResult;
 import de.valorit.cac.checks.Module;
+import de.valorit.cac.utils.Permissions;
 import de.valorit.cac.utils.packets.PacketVersionManager;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -29,7 +30,7 @@ public class ReachCheck {
         Player p = (Player) e.getDamager();
         Player damaged = (Player) e.getEntity();
 
-        if(p.hasPermission("cac.bypass")) {
+        if(p.hasPermission(Permissions.BYPASS)) {
             return PASS;
         }
 
@@ -74,6 +75,10 @@ public class ReachCheck {
         Vector vec = loc.toVector();
         double distance = vec.distance(playerLocation.toVector());
 
+        if(p.hasPermission(Permissions.BYPASS)) {
+            return PASS;
+        }
+
         if(p.getGameMode() == GameMode.CREATIVE) {
             if (distance > maxDistanceCreative) {
                 //Player is hacking
@@ -99,6 +104,10 @@ public class ReachCheck {
 
         Vector vec = loc.toVector();
         double distance = vec.distance(playerLocation.toVector());
+
+        if(p.hasPermission(Permissions.BYPASS)) {
+            return PASS;
+        }
 
         if(p.getGameMode() == GameMode.CREATIVE) {
             if(distance > maxDistanceCreative) {
