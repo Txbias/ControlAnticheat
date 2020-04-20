@@ -82,9 +82,11 @@ public class PacketReader_1_12_R1  implements PacketReader{
             int id = (int) getValue(packet, "a");
             String use = getValue(packet, "action").toString();
 
-            if(use.equalsIgnoreCase("ATTACK")) {
-                Killaura.performCheck(id, player);
-                attacksCount++;
+            if(use != null) {
+                if(use.equalsIgnoreCase("ATTACK")) {
+                    Killaura.performCheck(id, player);
+                    attacksCount++;
+                }
             }
         } else if(name.equalsIgnoreCase("PacketPlayInCloseWindow")) {
             CheckResultsManager.getUser(player).setInventoryOpen(false);

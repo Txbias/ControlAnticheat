@@ -85,25 +85,18 @@ public class PacketReader_1_8_R3 implements PacketReader{
             int id = (int) getValue(packet, "a");
             String use = getValue(packet, "action").toString();
 
-            if(use.equalsIgnoreCase("ATTACK")) {
-                Killaura.performCheck(id, player);
+            if(use != null) {
+                if(use.equalsIgnoreCase("ATTACK")) {
+                    Killaura.performCheck(id, player);
 
-                attacksCount++;
+                    attacksCount++;
+                }
             }
         } else if(name.equalsIgnoreCase("PacketPlayInCloseWindow")) {
             CheckResultsManager.getUser(player).setInventoryOpen(false);
         } else if(name.equalsIgnoreCase("PacketPlayInPosition")) {
             blink.performCheck(player);
         }
-
-
-
-
-        /*if(!(name.equalsIgnoreCase("PacketPlayInKeepAlive"))  &&
-                !(name.equalsIgnoreCase("PacketPlayInPositionLook")) && !(name.equals("PacketPlayInFlying")) &&
-                !(name.equalsIgnoreCase("PacketPlayInPosition"))) {
-        }*/
-
     }
 
     @Override
@@ -125,12 +118,12 @@ public class PacketReader_1_8_R3 implements PacketReader{
     }
 
     @Override
-    public Object getValue(Object obj, String name) {
+    public Object getValue(Object obj, String name){
         try {
             Field field = obj.getClass().getDeclaredField(name);
             field.setAccessible(true);
             return field.get(obj);
-        } catch (NoSuchFieldException | IllegalAccessException e) {
+        } catch (IllegalAccessException | NoSuchFieldException e) {
             e.printStackTrace();
         }
         return null;

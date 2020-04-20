@@ -60,6 +60,10 @@ public class Config {
         List<String> enabled = settings.getStringList("notifications.enabled");
         String UUID = Utils.getUUID(p.getName());
 
+        if(UUID.isEmpty()) {
+            return;
+        }
+
         if(value) {
             if(!enabled.contains(UUID)) {
                 enabled.add(UUID);
