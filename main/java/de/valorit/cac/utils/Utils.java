@@ -14,12 +14,15 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.util.HashMap;
 
 
 public class Utils {
 
     public static final String PLUGIN_NAME = "ControlAnticheat";
     public static final String PREFIX = "§6CAC §7>> ";
+
+    private static final HashMap<String, String> UUIDs = new HashMap<>();
 
     public static void broadCheckResult(CheckResult result) {
         for (Player p : Bukkit.getOnlinePlayers()) {
@@ -72,7 +75,13 @@ public class Utils {
     }
 
     public static String getUUID(String name) {
+        if(UUIDs.containsKey(name)) {
+            System.out.println("Found cached UUID");
+            return UUIDs.get(name);
+        }
+
         try {
+            System.out.println("Fetching UUID from server...");
             URL url = new URL("https://api.mojang.com/users/profiles/minecraft/" + name);
 
             BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()));
@@ -91,7 +100,15 @@ public class Utils {
 
             MojangAPIResponse response = gson.fromJson(content, MojangAPIResponse.class);
 
-            return response.getId();
+            if(response == null) {
+                return "";
+            }
+
+            String id = response.getId();
+
+            UUIDs.put(name, id);
+
+            return id;
         } catch (IOException e) {
             e.printStackTrace();
         }
