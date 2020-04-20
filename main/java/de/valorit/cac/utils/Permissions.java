@@ -7,5 +7,6 @@ public class Permissions {
     public static final String RELOAD = "cac.reload";
     public static final String PING = "cac.ping";
     public static final String INFO = "cac.info";
+    public static final String NOTIFY = "cac.notify";
 
 }

@@ -23,7 +23,7 @@ public class Utils {
 
     public static void broadCheckResult(CheckResult result) {
         for (Player p : Bukkit.getOnlinePlayers()) {
-            if (p.hasPermission("cac.notify") || p.isOp() || p.hasPermission("cac.*")) {
+            if (p.hasPermission(Permissions.NOTIFY) || p.isOp() || p.hasPermission(Permissions.ADMIN)) {
                 Utils.sendCheckResult(p, result);
             }
         }
@@ -31,7 +31,7 @@ public class Utils {
 
     public static void broadCastWarning(String warning) {
         for(Player p : Bukkit.getOnlinePlayers()) {
-            if(p.hasPermission("cac.notify") || p.hasPermission("cac.*") || p.isOp()) {
+            if(p.hasPermission(Permissions.NOTIFY) || p.hasPermission(Permissions.ADMIN) || p.isOp()) {
                 Utils.sendWarning(p, warning);
             }
         }
