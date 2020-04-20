@@ -48,10 +48,11 @@ public class SpeedCheck {
             maxDistance = 0.88;
         }
         if(vectorDistance > maxDistance) {
-            //Player is hacking
-
-            p.teleport(from);
-            return new CheckResult(NAME, true, p);
+            if(p.getVelocity().getY() != 0 && (p.getVelocity().getX() != 0 || p.getVelocity().getZ() != 0)) {
+                //Player is hacking
+                p.teleport(from);
+                return new CheckResult(NAME, true, p);
+            }
         }
 
         return PASS;
