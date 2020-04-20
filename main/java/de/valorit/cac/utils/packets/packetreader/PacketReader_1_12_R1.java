@@ -10,6 +10,9 @@ import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToMessageDecoder;
 import net.minecraft.server.v1_12_R1.Packet;
+import net.minecraft.server.v1_12_R1.PacketPlayInCloseWindow;
+import net.minecraft.server.v1_12_R1.PacketPlayInFlying;
+import net.minecraft.server.v1_12_R1.PacketPlayInUseEntity;
 import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
@@ -78,9 +81,10 @@ public class PacketReader_1_12_R1  implements PacketReader{
         }
 
 
-        if(name.equalsIgnoreCase("PacketPlayInUseEntity")) {
-            int id = (int) getValue(packet, "a");
-            String use = getValue(packet, "action").toString();
+        if(packet instanceof PacketPlayInUseEntity) {
+            PacketPlayInUseEntity packetPlayInUseEntity = (PacketPlayInUseEntity) packet;
+            int id = (int) getValue(packetPlayInUseEntity, "a");
+            String use = getValue(packetPlayInUseEntity, "action").toString();
 
             if(use != null) {
                 if(use.equalsIgnoreCase("ATTACK")) {
@@ -88,20 +92,11 @@ public class PacketReader_1_12_R1  implements PacketReader{
                     attacksCount++;
                 }
             }
-        } else if(name.equalsIgnoreCase("PacketPlayInCloseWindow")) {
+        } else if(packet instanceof PacketPlayInCloseWindow) {
             CheckResultsManager.getUser(player).setInventoryOpen(false);
-
-        }else if(name.equalsIgnoreCase("PacketPlayInPosition")) {
+        } else if(packet instanceof PacketPlayInFlying.PacketPlayInPosition) {
             blink.performCheck(player);
         }
-
-
-
-     /*  if(!(name.equalsIgnoreCase("PacketPlayInKeepAlive"))  &&
-                !(name.equalsIgnoreCase("PacketPlayInPositionLook"))) {
-            //System.out.println(name);
-        }
-*/
     }
 
 

@@ -10,6 +10,9 @@ import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToMessageDecoder;
 import net.minecraft.server.v1_8_R3.Packet;
+import net.minecraft.server.v1_8_R3.PacketPlayInCloseWindow;
+import net.minecraft.server.v1_8_R3.PacketPlayInFlying;
+import net.minecraft.server.v1_8_R3.PacketPlayInUseEntity;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
@@ -79,11 +82,10 @@ public class PacketReader_1_8_R3 implements PacketReader{
             attacksCount = 0;
         }
 
-
-
-        if(name.equalsIgnoreCase("PacketPlayInUseEntity")) {
-            int id = (int) getValue(packet, "a");
-            String use = getValue(packet, "action").toString();
+        if(packet instanceof PacketPlayInUseEntity) {
+            PacketPlayInUseEntity playInUseEntity = (PacketPlayInUseEntity) packet;
+            int id = (int) getValue(playInUseEntity, "a");
+            String use = getValue(playInUseEntity, "action").toString();
 
             if(use != null) {
                 if(use.equalsIgnoreCase("ATTACK")) {
@@ -92,9 +94,9 @@ public class PacketReader_1_8_R3 implements PacketReader{
                     attacksCount++;
                 }
             }
-        } else if(name.equalsIgnoreCase("PacketPlayInCloseWindow")) {
+        } else if(packet instanceof PacketPlayInCloseWindow) {
             CheckResultsManager.getUser(player).setInventoryOpen(false);
-        } else if(name.equalsIgnoreCase("PacketPlayInPosition")) {
+        } else if(packet instanceof PacketPlayInFlying.PacketPlayInPosition) {
             blink.performCheck(player);
         }
     }
@@ -114,6 +116,7 @@ public class PacketReader_1_8_R3 implements PacketReader{
             field.set(obj, value);
         } catch (NoSuchFieldException | IllegalAccessException e) {
             e.printStackTrace();
+            System.out.println(obj.getClass());
         }
     }
 
@@ -125,6 +128,7 @@ public class PacketReader_1_8_R3 implements PacketReader{
             return field.get(obj);
         } catch (IllegalAccessException | NoSuchFieldException e) {
             e.printStackTrace();
+            System.out.println(obj.getClass());
         }
         return null;
     }
