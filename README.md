@@ -25,6 +25,7 @@ Combat:
 ### Commands:
 - /cac info [player] - Shows which cheats were detected.
 - /cac reload - Reloads the config.
+- /ping [player] - Lets you see the ping of yourself or of another player
 
 ### Permissions:
 - cac.* - Gives you all permissions other than cac.bypass
@@ -32,6 +33,7 @@ Combat:
 - cac.notify - You get notified when someone is cheating
 - cac.info - Lets you use /cac info [player]
 - cac.reload - Lets you use /cac reload
+- cac.ping - Lets you use /ping [player]
 
 ### Config:
 ```
