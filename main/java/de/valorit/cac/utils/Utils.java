@@ -1,7 +1,5 @@
 package de.valorit.cac.utils;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import de.valorit.cac.User;
 import de.valorit.cac.checks.CheckResult;
 import de.valorit.cac.checks.CheckResultsManager;
@@ -10,10 +8,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URL;
 import java.util.HashMap;
 
 
@@ -74,47 +68,6 @@ public class Utils {
         return (double) Math.round(num * 10000d) / 10000d;
     }
 
-    public static String getUUID(String name) {
-        if(UUIDs.containsKey(name)) {
-            System.out.println("Found cached UUID");
-            return UUIDs.get(name);
-        }
-
-        try {
-            System.out.println("Fetching UUID from server...");
-            URL url = new URL("https://api.mojang.com/users/profiles/minecraft/" + name);
-
-            BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()));
-            StringBuilder contentBuilder = new StringBuilder();
-
-            String str;
-            while((str = reader.readLine()) != null) {
-                contentBuilder.append(str);
-            }
-            reader.close();
-
-            String content = contentBuilder.toString();
-
-            GsonBuilder gsonBuilder = new GsonBuilder();
-            Gson gson = gsonBuilder.create();
-
-            MojangAPIResponse response = gson.fromJson(content, MojangAPIResponse.class);
-
-            if(response == null) {
-                return "";
-            }
-
-            String id = response.getId();
-
-            UUIDs.put(name, id);
-
-            return id;
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return "";
-    }
-
     private static void sendCheckResult(Player receiver, CheckResult result) {
         User user = CheckResultsManager.getUser(result.getPlayer());
         int level = user.getLevel(result.getModule());
@@ -122,26 +75,5 @@ public class Utils {
         receiver.sendMessage(PREFIX + " The player §c" + user.getPlayer().getName() + "§7 ("+ PacketVersionManager.getCraftPlayerManager().getPing(user.getPlayer())
                 + "ms) failed " + result.getModule() + " (vl: §c" + level + "§7)");
     }
-
-
-    static class MojangAPIResponse {
-
-        private String id;
-        private String name;
-
-        public MojangAPIResponse(String id, String name) {
-            this.id = id;
-            this.name = name;
-        }
-
-        public String getId() {
-            return id;
-        }
-
-        public String getName() {
-            return name;
-        }
-    }
-
 
 }

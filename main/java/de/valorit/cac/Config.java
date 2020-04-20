@@ -3,7 +3,6 @@ package de.valorit.cac;
 import de.valorit.cac.checks.CheckResultsManager;
 import de.valorit.cac.utils.Permissions;
 import de.valorit.cac.utils.Utils;
-import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
@@ -11,6 +10,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 
 public class Config {
@@ -39,7 +39,7 @@ public class Config {
         maxCombatRange = config.getDouble("maxCombatRange");
     }
 
-    public static void loadSettings() {
+    public static void loadSettings(Player p) {
         if(!SETTINGS_FILE.exists()) {
             System.out.println("No settings file found.");
             createDefaultSettings();
@@ -47,10 +47,14 @@ public class Config {
         }
         List<String> enabled = settings.getStringList("notifications.enabled");
 
-        for(String name : enabled) {
-            Player p = Bukkit.getPlayer(Utils.getUUID(name));
-            if(p.hasPermission(Permissions.NOTIFY) || p.hasPermission(Permissions.ADMIN) || p.isOp()) {
-                CheckResultsManager.getUser(p).setReceivesNotifications(true);
+        String playerUUIDString = p.getUniqueId().toString();
+
+        for(String uuidString : enabled) {
+            if(uuidString.equalsIgnoreCase(playerUUIDString)) {
+                if(p.hasPermission(Permissions.NOTIFY) || p.hasPermission(Permissions.ADMIN) || p.isOp()) {
+                    CheckResultsManager.getUser(p).setReceivesNotifications(true);
+                }
+                return;
             }
         }
 
@@ -58,18 +62,14 @@ public class Config {
 
     public static void setReceivesNotifications(Player p, boolean value) {
         List<String> enabled = settings.getStringList("notifications.enabled");
-        String UUID = Utils.getUUID(p.getName());
-
-        if(UUID.isEmpty()) {
-            return;
-        }
+        UUID uuid = p.getUniqueId();
 
         if(value) {
-            if(!enabled.contains(UUID)) {
-                enabled.add(UUID);
+            if(!enabled.contains(uuid.toString())) {
+                enabled.add(uuid.toString());
             }
         } else {
-            enabled.remove(UUID);
+            enabled.remove(uuid.toString());
         }
 
         settings.set("notifications.enabled", enabled);
@@ -133,8 +133,8 @@ public class Config {
     public static boolean isReceivingNotifications(Player p) {
         if(p.hasPermission(Permissions.NOTIFY) || p.hasPermission(Permissions.ADMIN) || p.isOp()) {
             List<String> enabled = settings.getStringList("notifications.enabled");
-            String UUID = Utils.getUUID(p.getName());
-            return enabled.contains(UUID);
+            UUID uuid = p.getUniqueId();
+            return enabled.contains(uuid.toString());
         }
         return false;
     }

@@ -1,5 +1,6 @@
 package de.valorit.cac.events;
 
+import de.valorit.cac.Config;
 import de.valorit.cac.User;
 import de.valorit.cac.checks.CheckResultsManager;
 import de.valorit.cac.checks.combat.Killaura;
@@ -18,6 +19,8 @@ public class JoinQuitEvent implements Listener {
         CheckResultsManager.users.add(new User(p));
 
         Killaura.addPlayer(p);
+
+        Config.loadSettings(p);
     }
 
     @EventHandler
