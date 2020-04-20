@@ -11,11 +11,13 @@ import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.UUID;
 
 public class NPC_1_8_R3 implements NPC{
 
     private ArrayList<Player> npcPlayers = new ArrayList<>();
+    private HashMap<Player, EntityPlayer> npcs = new HashMap<>();
 
     @Override
     public void spawn(Player p, Location loc, String name) {
@@ -26,11 +28,7 @@ public class NPC_1_8_R3 implements NPC{
         EntityPlayer npc = new EntityPlayer(nmsServer, nmsWorld, gameProfile, new PlayerInteractManager(nmsWorld));
         Player npcPlayer = npc.getBukkitEntity().getPlayer();
 
-        if(random.nextDouble() > 0.5) {
-            npcPlayer.setPlayerListName(name);
-        } else {
-          npcPlayer.setPlayerListName("");
-        }
+        npcs.put(p, npc);
 
         npcPlayers.add(npcPlayer);
 
@@ -39,22 +37,23 @@ public class NPC_1_8_R3 implements NPC{
         PlayerConnection connection = ((CraftPlayer) p).getHandle().playerConnection;
         connection.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.ADD_PLAYER, npc));
         connection.sendPacket(new PacketPlayOutNamedEntitySpawn(npc));
-
-        connection.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.REMOVE_PLAYER, npc));
     }
 
     @Override
     public void destroy(Player p, String name) {
         PlayerConnection connection = ((CraftPlayer) p).getHandle().playerConnection;
-        Player npc = getNPC(name);
-        if(npc == null) {
+        Player npcPlayer = getNPC(name);
+        if(npcPlayer == null) {
             System.out.println("NPC not found!");
             return;
         }
 
-        npcPlayers.remove(npc);
+        npcPlayers.remove(npcPlayer);
+        EntityPlayer npc = npcs.get(p);
+        npcs.remove(p);
 
-        connection.sendPacket(new PacketPlayOutEntityDestroy(npc.getEntityId()));
+        connection.sendPacket(new PacketPlayOutEntityDestroy(npcPlayer.getEntityId()));
+        connection.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.REMOVE_PLAYER, npc));
     }
 
     @Override

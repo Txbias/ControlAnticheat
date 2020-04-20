@@ -13,7 +13,7 @@ public class User {
 
     private final Player p;
     private LinkedHashMap<Module, Integer> levels = new LinkedHashMap<>();
-    private PacketReader reader;
+    private final PacketReader reader;
     private boolean eating;
     private boolean usingBow;
     private boolean inventoryOpen = false;
@@ -103,6 +103,10 @@ public class User {
 
     public LinkedHashMap<Module, Integer> getLevels() {
         return levels;
+    }
+
+    public PacketReader getReader() {
+        return reader;
     }
 
     private void loadModules() {

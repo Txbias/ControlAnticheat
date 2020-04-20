@@ -30,6 +30,8 @@ public class JoinQuitEvent implements Listener {
         CheckResultsManager.users.remove(p);
 
         Killaura.removePlayer(p);
+
+        CheckResultsManager.getUser(p).getReader().uninject();
     }
 
 

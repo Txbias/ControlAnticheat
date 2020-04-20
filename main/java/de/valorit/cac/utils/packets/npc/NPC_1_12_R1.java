@@ -4,20 +4,20 @@ import com.mojang.authlib.GameProfile;
 import net.minecraft.server.v1_12_R1.*;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_12_R1.CraftServer;
 import org.bukkit.craftbukkit.v1_12_R1.CraftWorld;
 import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.UUID;
 
 public class NPC_1_12_R1 implements NPC{
 
 
     private ArrayList<Player> npcPlayers = new ArrayList<>();
+    private HashMap<Player, EntityPlayer> npcs = new HashMap<>();
 
 
     @Override
@@ -29,18 +29,8 @@ public class NPC_1_12_R1 implements NPC{
         EntityPlayer npc = new EntityPlayer(nmsServer, nmsWorld, gameProfile, new PlayerInteractManager(nmsWorld));
         Player npcPlayer = npc.getBukkitEntity().getPlayer();
 
+        npcs.put(p, npc);
 
-        ItemStack helmet = new ItemStack(Material.GOLD_HELMET);
-        ItemStack boots = new ItemStack(Material.DIAMOND_BOOTS);
-
-        npcPlayer.getInventory().setHelmet(helmet);
-        npcPlayer.getInventory().setBoots(boots);
-
-        if(random.nextDouble() > 0.5) {
-            npcPlayer.setPlayerListName(name);
-        } else {
-            npcPlayer.setPlayerListName("");
-        }
         npcPlayers.add(npcPlayer);
 
         npc.setLocation(loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
@@ -48,22 +38,23 @@ public class NPC_1_12_R1 implements NPC{
         PlayerConnection connection = ((CraftPlayer) p).getHandle().playerConnection;
         connection.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.ADD_PLAYER, npc));
         connection.sendPacket(new PacketPlayOutNamedEntitySpawn(npc));
-
-        connection.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.REMOVE_PLAYER, npc));
     }
 
     @Override
     public void destroy(Player p, String name) {
         PlayerConnection connection = ((CraftPlayer) p).getHandle().playerConnection;
-        Player npc = getNPC(name);
-        if(npc == null) {
+        Player npcPlayer = getNPC(name);
+        if(npcPlayer == null) {
             System.out.println("NPC not found!");
             return;
         }
+        npcPlayers.remove(npcPlayer);
 
-        npcPlayers.remove(npc);
+        EntityPlayer npc = npcs.get(p);
+        npcs.remove(p);
 
-        connection.sendPacket(new PacketPlayOutEntityDestroy(npc.getEntityId()));
+        connection.sendPacket(new PacketPlayOutEntityDestroy(npcPlayer.getEntityId()));
+        connection.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.REMOVE_PLAYER, npc));
     }
 
     @Override
