@@ -2,16 +2,18 @@ package de.valorit.cac.events;
 
 import de.valorit.cac.Main;
 import de.valorit.cac.checks.CheckResultsManager;
+import de.valorit.cac.checks.player.GhostHand;
 import de.valorit.cac.utils.GameEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 
 public class PlayerEvent extends GameEvent implements Listener {
 
-    //GhostHand ghostHandCheck = new GhostHand();
+    GhostHand ghostHandCheck = new GhostHand();
 
     @EventHandler
     public void onClick(InventoryClickEvent e) {
@@ -23,10 +25,10 @@ public class PlayerEvent extends GameEvent implements Listener {
         }, 3);
     }
 
-    /*@EventHandler
+    @EventHandler
     public void onInteract(PlayerInteractEvent e) {
         addCheckResult(ghostHandCheck.performCheck(e));
-    }*/
+    }
 
 
 
