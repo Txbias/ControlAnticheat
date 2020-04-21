@@ -5,6 +5,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
+import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -84,6 +85,16 @@ public class PlayerUtils {
         Material m = b.getType();
 
         return liquids.contains(m);
+    }
+
+    public static Location getNPCLocation(Player p) {
+        Location loc = p.getLocation();
+        Vector vec = loc.getDirection();
+        vec.multiply(-2.5D);
+        loc.add(vec);
+        loc.setX(loc.getX() + 1);
+        loc.setZ(loc.getZ() + 1);
+        return loc;
     }
 
 }

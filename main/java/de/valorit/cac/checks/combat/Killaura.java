@@ -5,12 +5,11 @@ import de.valorit.cac.checks.CheckResult;
 import de.valorit.cac.checks.Module;
 import de.valorit.cac.utils.GameEvent;
 import de.valorit.cac.utils.Permissions;
+import de.valorit.cac.utils.PlayerUtils;
 import de.valorit.cac.utils.packets.PacketVersionManager;
 import de.valorit.cac.utils.packets.npc.NPC;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -55,7 +54,7 @@ public class Killaura {
                         String name = generateName();
 
                         SPAWNED_NPCs.put(p, name);
-                        npc.spawn(p, getBlockBehindPlayer(p), name);
+                        npc.spawn(p, PlayerUtils.getNPCLocation(p), name);
 
                         PLAYERS.replace(p, System.currentTimeMillis());
                         CHECKED.add(p);
@@ -89,14 +88,5 @@ public class Killaura {
         }
         return builder.toString();
     }
-
-    private Location getBlockBehindPlayer(Player p) {
-        Location loc = p.getLocation();
-        Vector vec = loc.getDirection().multiply(-3.5D);
-        vec.setX(0.5);
-        vec.setY(0.5);
-        return loc.add(vec);
-    }
-
 
 }
