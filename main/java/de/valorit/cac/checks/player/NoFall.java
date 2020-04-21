@@ -35,7 +35,7 @@ public class NoFall {
                 double damageTaken = lastHealth - p.getHealth();
                 double requiredDamage = (lastFallDistance * 0.5) - 1.5;
 
-                if(requiredDamage > damageTaken) {
+                if(requiredDamage > damageTaken && p.getTicksLived() > 40) {
                     //Player is hacking
                     double difference = requiredDamage - damageTaken;
                     if(difference > 3) {
