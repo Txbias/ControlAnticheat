@@ -25,12 +25,13 @@ Combat:
 ### Commands:
 - /cac info [player] - Shows which cheats were detected.
 - /cac reload - Reloads the config.
+- /cac notify - Toggles your notifications
 - /ping [player] - Lets you see the ping of yourself or of another player
 
 ### Permissions:
 - cac.* - Gives you all permissions other than cac.bypass
 - cac.bypass - You wont be checked for cheats.
-- cac.notify - You get notified when someone is cheating
+- cac.notify - You get notified when someone is cheating & lets you use /cac notify
 - cac.info - Lets you use /cac info [player]
 - cac.reload - Lets you use /cac reload
 - cac.ping - Lets you use /ping [player]
@@ -57,8 +58,6 @@ The maximum reach a player can have
 
  
 ## Comming soon:
-
--/cac notify [on/off] comand for disabling notifications when someone was caught cheating
 
 -autobans and autokicks
 
