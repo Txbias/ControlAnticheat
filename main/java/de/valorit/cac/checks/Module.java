@@ -15,4 +15,5 @@ public enum Module {
     SCAFFOLD,
     GHOSTHAND,
     WATERWALK,
+    TOWER
 }
