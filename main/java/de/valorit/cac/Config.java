@@ -25,6 +25,12 @@ public class Config {
     private static int maxPing;
     private static double maxCombatRange;
 
+    private static boolean autoBan;
+    private static String banCommand;
+    private static int maxFlagsPerModule;
+    private static int maxFlagsTotal;
+
+
 
     public static void loadConfig() {
         if(!CONFIG_FILE.exists()) {
@@ -37,6 +43,11 @@ public class Config {
         maxPackets = config.getInt("maxPackets");
         maxPing = config.getInt("maxPing");
         maxCombatRange = config.getDouble("maxCombatRange");
+
+        autoBan = config.getBoolean("autoBan");
+        banCommand = config.getString("banCommand");
+        maxFlagsPerModule = config.getInt("maxFlagsPerModule");
+        maxFlagsTotal = config.getInt("maxFlagsTotal");
     }
 
     public static void loadSettings(Player p) {
@@ -104,6 +115,10 @@ public class Config {
         config.set("maxPackets", 80);
         config.set("maxPing", 300);
         config.set("maxCombatRange", 4);
+        config.set("autoBan", true);
+        config.set("banCommand", "/ban [player]");
+        config.set("maxFlagsPerModule", 15);
+        config.set("maxFlagsTotal", 30);
         saveConfig();
     }
 
@@ -126,8 +141,20 @@ public class Config {
         return maxPing;
     }
 
+    public static int getMaxFlagsPerModule() {
+        return maxFlagsPerModule;
+    }
+
+    public static int getMaxFlagsTotal() {
+        return maxFlagsTotal;
+    }
+
     public static double getMaxCombatRange() {
         return maxCombatRange;
+    }
+
+    public static boolean isAutoBanEnabled() {
+        return autoBan;
     }
 
     public static boolean isReceivingNotifications(Player p) {
@@ -137,5 +164,9 @@ public class Config {
             return enabled.contains(uuid.toString());
         }
         return false;
+    }
+
+    public static String getBanCommand() {
+        return banCommand;
     }
 }

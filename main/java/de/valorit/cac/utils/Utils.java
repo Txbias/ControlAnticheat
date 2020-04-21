@@ -7,6 +7,7 @@ import de.valorit.cac.utils.packets.PacketVersionManager;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.permissions.Permission;
 
 import java.util.HashMap;
 
@@ -35,6 +36,17 @@ public class Utils {
                 User user = CheckResultsManager.getUser(p);
                 if(user.isReceivesNotifications()) {
                     Utils.sendWarning(p, warning);
+                }
+            }
+        }
+    }
+
+    public static void broadCastMessage(String message) {
+        for(Player p : Bukkit.getOnlinePlayers()) {
+            if(p.hasPermission(Permissions.NOTIFY) || p.hasPermission(Permissions.ADMIN) || p.isOp()) {
+                User user = CheckResultsManager.getUser(p);
+                if(user.isReceivesNotifications()) {
+                    Utils.sendMessage(p, message);
                 }
             }
         }

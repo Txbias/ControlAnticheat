@@ -120,7 +120,6 @@ public class User {
         levels.put(Module.INVENTORYMOVE, 0);
         levels.put(Module.NOFALL, 0);
         levels.put(Module.BLINK, 0);
-        levels.put(Module.SCAFFOLD, 0);
         levels.put(Module.GHOSTHAND, 0);
         levels.put(Module.WATERWALK, 0);
         levels.put(Module.TOWER, 0);
