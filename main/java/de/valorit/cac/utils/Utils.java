@@ -7,17 +7,11 @@ import de.valorit.cac.utils.packets.PacketVersionManager;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.permissions.Permission;
-
-import java.util.HashMap;
-
 
 public class Utils {
 
     public static final String PLUGIN_NAME = "ControlAnticheat";
     public static final String PREFIX = "§6CAC §7>> ";
-
-    private static final HashMap<String, String> UUIDs = new HashMap<>();
 
     public static void broadCheckResult(CheckResult result) {
         for (Player p : Bukkit.getOnlinePlayers()) {

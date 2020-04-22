@@ -1,9 +1,9 @@
 package de.valorit.cac.events;
 
-import de.valorit.cac.Config;
 import de.valorit.cac.User;
 import de.valorit.cac.checks.CheckResultsManager;
 import de.valorit.cac.checks.combat.Killaura;
+import de.valorit.cac.utils.Settings;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -20,7 +20,7 @@ public class JoinQuitEvent implements Listener {
 
         Killaura.addPlayer(p);
 
-        Config.loadSettings(p);
+        Settings.loadSettings(p);
     }
 
     @EventHandler

@@ -1,0 +1,22 @@
+# The minimum time between two bow shots allowed. (in milliseconds)
+minTimeBetweenBowShots: 149
+
+# The maximum ping a player can have to still be checked. If a client sends more packets,
+# all players with the cac.notify permission will be notified.
+maxPackets: 80
+
+# The maximum range a player is allowed to have when hitting an entity.
+maxCombatRange: 4
+
+# If set to true players will get banned automatically.
+autoBan: true
+
+# The command that will be executed to ban a player.
+banCommand: /ban [player]
+
+# The maximum amount of flags a player is allowed to have per cheat before getting banned.
+maxFlagsPerModule: 15
+
+# The maximum amount of flags a player is allowed to have before getting banned.
+maxFlagsTotal: 30
+

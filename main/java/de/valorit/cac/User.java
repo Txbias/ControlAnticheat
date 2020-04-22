@@ -2,6 +2,7 @@ package de.valorit.cac;
 
 import de.valorit.cac.checks.Module;
 import de.valorit.cac.utils.Permissions;
+import de.valorit.cac.utils.Settings;
 import de.valorit.cac.utils.packets.PacketVersionManager;
 import de.valorit.cac.utils.packets.packetreader.PacketReader;
 import org.bukkit.entity.Player;
@@ -33,7 +34,7 @@ public class User {
         eating = false;
         usingBow = false;
 
-        if(p.hasPermission(Permissions.NOTIFY) && Config.isReceivingNotifications(p)) {
+        if(p.hasPermission(Permissions.NOTIFY) && Settings.isReceivingNotifications(p)) {
             receivesNotifications = true;
         }
 
@@ -73,7 +74,7 @@ public class User {
     }
 
     public void setReceivesNotifications(boolean value) {
-        Config.setReceivesNotifications(p, value);
+        Settings.setReceivesNotifications(p, value);
         this.receivesNotifications = value;
     }
 
