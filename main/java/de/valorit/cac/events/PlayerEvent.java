@@ -1,6 +1,7 @@
 package de.valorit.cac.events;
 
 import de.valorit.cac.Main;
+import de.valorit.cac.User;
 import de.valorit.cac.checks.CheckResultsManager;
 import de.valorit.cac.checks.player.GhostHand;
 import de.valorit.cac.utils.GameEvent;
@@ -10,6 +11,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
 
 public class PlayerEvent extends GameEvent implements Listener {
 
@@ -30,6 +32,11 @@ public class PlayerEvent extends GameEvent implements Listener {
         addCheckResult(ghostHandCheck.performCheck(e));
     }
 
+    @EventHandler
+    public void onDie(PlayerRespawnEvent e) {
+        User user = CheckResultsManager.getUser(e.getPlayer());
+        user.setLastDeath(System.currentTimeMillis());
+    }
 
 
 }

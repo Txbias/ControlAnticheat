@@ -21,6 +21,7 @@ public class User {
     private boolean attack = true;
     private boolean receivesNotifications = false;
 
+    private long lastDeath;
     private long bowStarted = -1;
     private final long JOIN_TIME;
 
@@ -33,6 +34,7 @@ public class User {
 
         eating = false;
         usingBow = false;
+        lastDeath = System.currentTimeMillis();
 
         if(p.hasPermission(Permissions.NOTIFY) && Settings.isReceivingNotifications(p)) {
             receivesNotifications = true;
@@ -78,6 +80,10 @@ public class User {
         this.receivesNotifications = value;
     }
 
+    public void setLastDeath(long lastDeath) {
+        this.lastDeath = lastDeath;
+    }
+
     public void incrementLevel(Module module) {
         levels.replace(module, levels.get(module) + 1);
     }
@@ -96,6 +102,10 @@ public class User {
 
     public long getBowStarted() {
         return bowStarted;
+    }
+
+    public long getLastDeath() {
+        return lastDeath;
     }
 
     public long getJoinTime() {
