@@ -14,47 +14,33 @@ import java.util.List;
 
 public class CheckResultsManager {
 
-    private final Main PLUGIN;
-
     public static List<User> users = new ArrayList<>();
 
-    public CheckResultsManager(Main plugin) {
-        this.PLUGIN = plugin;
-    }
-
     public void handleCheckResults() {
-        Bukkit.getScheduler().runTaskAsynchronously(PLUGIN, () -> {
-            while (true) {
-                List<CheckResult> results = GameEvent.getResults();
-                List<User> flaggedUsers = new ArrayList<>();
+        Bukkit.getScheduler().runTaskTimerAsynchronously(Main.getInstance(), () -> {
+            List<CheckResult> results = GameEvent.getResults();
+            List<User> flaggedUsers = new ArrayList<>();
 
-                for (int i = 0; i < results.size(); i++) {
-                    if (results.get(i).isHacking) {
-                        User user = getUser(results.get(i).getPlayer());
-                        user.incrementLevel(results.get(i).getModule());
-                        updateUser(user);
+            for (int i = 0; i < results.size(); i++) {
+                if (results.get(i).isHacking) {
+                    User user = getUser(results.get(i).getPlayer());
+                    user.incrementLevel(results.get(i).getModule());
+                    updateUser(user);
 
-                        if(!flaggedUsers.contains(user)) {
-                            flaggedUsers.add(user);
-                        }
-                        if(user.getLevel(results.get(i).getModule()) % 4 == 0) {
-                            Utils.broadCheckResult(results.get(i));
-                        }
+                    if(!flaggedUsers.contains(user)) {
+                        flaggedUsers.add(user);
+                    }
+                    if(user.getLevel(results.get(i).getModule()) % 4 == 0) {
+                        Utils.broadCheckResult(results.get(i));
                     }
                 }
-
-                if(Config.isAutoBanEnabled()) {
-                    executeAutoBans(flaggedUsers);
-                }
-                GameEvent.clearResults();
-
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
             }
-        });
+
+            if(Config.isAutoBanEnabled()) {
+                executeAutoBans(flaggedUsers);
+            }
+            GameEvent.clearResults();
+        }, 40, 20);
     }
 
     public static User getUser(Player p) {

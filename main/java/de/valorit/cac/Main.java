@@ -15,7 +15,7 @@ public class Main extends JavaPlugin {
 
     public static Main instance;
 
-    CheckResultsManager resultsManager = new CheckResultsManager(this);
+    CheckResultsManager resultsManager = new CheckResultsManager();
     PluginManager pluginManager = getServer().getPluginManager();
 
     PacketVersionManager packetVersionManager = new PacketVersionManager();
