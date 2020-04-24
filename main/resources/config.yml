@@ -1,9 +1,12 @@
 # The minimum time between two bow shots allowed. (in milliseconds)
 minTimeBetweenBowShots: 149
 
-# The maximum ping a player can have to still be checked. If a client sends more packets,
+# The maximum amount of packets a player is allowed to send per second. If a client sends more packets,
 # all players with the cac.notify permission will be notified.
 maxPackets: 80
+
+# The maximum ping a player can have to still be checked
+maxPing: 400
 
 # The maximum range a player is allowed to have when hitting an entity.
 maxCombatRange: 4

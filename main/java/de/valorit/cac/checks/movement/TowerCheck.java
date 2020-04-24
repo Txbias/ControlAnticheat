@@ -1,107 +1,142 @@
 package de.valorit.cac.checks.movement;
 
+import de.valorit.cac.Config;
 import de.valorit.cac.checks.CheckResult;
 import de.valorit.cac.checks.Module;
 import de.valorit.cac.utils.Permissions;
 import de.valorit.cac.utils.PlayerUtils;
+import de.valorit.cac.utils.packets.PacketVersionManager;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.util.Vector;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class TowerCheck {
 
-    private final Module NAME = Module.TOWER;
-    private final CheckResult PASS = new CheckResult();
+    private static final Module NAME = Module.TOWER;
+    private static final CheckResult PASS = new CheckResult();
 
-     private final HashMap<Player, Block> lastBlockPlaced = new HashMap<>();
-     private final HashMap<Player, Location> lastLocation = new HashMap<>();
-     private final HashMap<Player, Long> lastBlockPlacedTime = new HashMap<>();
-     private final HashMap<Player, Long> lastDifference = new HashMap<>();
-     private final HashMap<Player, Double> lastVelocityY = new HashMap<>();
+    private static final HashMap<Player, ArrayList<Block>> lastBlocks = new HashMap<>();
+    private static final HashMap<Player, ArrayList<Location>> lastLocations = new HashMap<>();
+    private static final HashMap<Player, Long> lastBlockTime = new HashMap<>();
+    private static final HashMap<Player, Long> lastDifference = new HashMap<>();
 
     public CheckResult performCheck(BlockPlaceEvent e) {
+
         Player p = e.getPlayer();
 
         if(p.hasPermission(Permissions.BYPASS)) {
             return PASS;
         }
 
-        //Check if player has placed a block before
-        if(!lastBlockPlaced.containsKey(p)) {
-            lastBlockPlaced.put(p, e.getBlock());
-            lastLocation.put(p, p.getLocation());
-            lastDifference.put(p, 1000L);
-            lastBlockPlacedTime.put(p, System.currentTimeMillis());
-            lastVelocityY.put(p, 0.0);
+        if(PacketVersionManager.getCraftPlayerManager().getPing(p) > Config.getMaxPing()) {
+            System.out.println(1);
+            System.out.println(PacketVersionManager.getCraftPlayerManager().getPing(p));
+            System.out.println(Config.getMaxPing());
             return PASS;
         }
 
         Block placed = e.getBlockPlaced();
+        Block underPlayer = PlayerUtils.getBlockUnderPlayer(p);
 
-        //Check if player is standing on the placed block
-        if(!PlayerUtils.getBlockUnderPlayer(p).equals(placed) && !PlayerUtils.getBlockUnderPlayer(p).getType().equals(Material.AIR)) {
-            updateMaps(p, placed);
+        if(!lastBlocks.containsKey(p)) {
+            lastBlocks.put(p, new ArrayList<>());
+            lastBlocks.get(p).add(placed);
+            lastLocations.put(p, new ArrayList<>());
+            lastLocations.get(p).add(p.getLocation());
+            lastBlockTime.put(p, System.currentTimeMillis());
+            lastDifference.put(p, 10000L);
             return PASS;
         }
 
-        //Check if new block is on top of the old one
-        if(!(placed.getLocation().getBlockX() == p.getLocation().getBlockX()) &&
-                !(placed.getLocation().getBlockZ() == p.getLocation().getBlockZ())) {
+        if(!underPlayer.equals(placed) && !underPlayer.getType().equals(Material.AIR)) {
+            updateHashMaps(p, placed);
             return PASS;
         }
 
-        //Player is moving sideways
-        if(p.getLocation().getBlockX() != lastLocation.get(p).getBlockX() && p.getLocation().getBlockZ() != lastLocation.get(p).getBlockZ()) {
+        Location lastBlockLocation = lastBlocks.get(p).get(lastBlocks.get(p).size() - 1).getLocation();
+
+        //Check whether the new block is on top of the last one
+        if(!(placed.getLocation().getBlockY() - lastBlockLocation.getBlockY() == 1 && placed.getLocation().getBlockZ() == lastBlockLocation.getBlockZ() &&
+                placed.getLocation().getBlockX() == lastBlockLocation.getBlockX())) {
+            updateHashMaps(p, placed);
+            return PASS;
+        }
+
+        if(PlayerUtils.isInLiquid(p)) {
+            updateHashMaps(p, placed);
+            return PASS;
+        }
+
+        Location lastPlayerLocation = lastLocations.get(p).get(lastLocations.get(p).size() - 1);
+
+        if(p.getLocation().getBlockY() - placed.getLocation().getBlockY() != 1) {
+            updateHashMaps(p, placed);
+            return PASS;
+        }
+
+        //Check if player has moved upwards
+        if(!(p.getLocation().getBlockY() - lastPlayerLocation.getBlockY() >= 1)) {
+            updateHashMaps(p, placed);
+            return PASS;
+        }
+
+        if(underPlayer.getType() == Material.AIR && lastBlocks.get(p).get(lastBlocks.get(p).size() - 1).getType() != Material.AIR ) {
+            updateHashMaps(p, placed);
+            return PASS;
+        }
+
+        if(!(p.getLocation().getBlockX() == lastPlayerLocation.getBlockX() && p.getLocation().getBlockZ() == lastPlayerLocation.getBlockZ())) {
+            updateHashMaps(p, placed);
             return PASS;
         }
 
         if(p.getFallDistance() > 1) {
+            updateHashMaps(p, placed);
             return PASS;
         }
 
-        if(placed.getLocation().getY() - lastBlockPlaced.get(p).getLocation().getY() == 1) {
-            //New block is one block higher then the last block
-            if(p.getLocation().getBlock().getY() - lastLocation.get(p).getBlock().getY() == 1) {
-                //Player is also one block higher
-
-                Vector velocity = p.getVelocity();
-                //Check if the blocks are placed shortly after each other
-                if(System.currentTimeMillis() - lastBlockPlacedTime.get(p) < 400 && lastDifference.get(p) < 400) {
-
-                    if(velocity.getZ() == 0 && velocity.getX() == 0 && velocity.getY() > 0.15 && lastVelocityY.get(p) > 0.15) {
-                        //Player is hacking
-                        e.setCancelled(true);
-                        updateMaps(p, placed);
-                        return new CheckResult(NAME, true, p);
-                    } else if(velocity.getY() < 0 && velocity.getY() > -0.29) {
-                        //Player is hacking
-                        e.setCancelled(true);
-                        updateMaps(p, placed);
-                        return new CheckResult(NAME, true, p);
-                    }
-                }
-            }
+        if(System.currentTimeMillis() - lastBlockTime.get(p) > 400 || lastDifference.get(p) > 400) {
+            updateHashMaps(p, placed);
+            return PASS;
         }
-        updateMaps(p, placed);
-        return PASS;
+
+        double xDifference = p.getLocation().getX() - lastPlayerLocation.getX();
+        double zDifference = p.getLocation().getZ() - lastPlayerLocation.getZ();
+
+        if(xDifference > 0.01 || xDifference < -0.01) {
+            updateHashMaps(p, placed);
+            return PASS;
+        }
+
+        if(zDifference > 0.01 || zDifference < -0.01) {
+            updateHashMaps(p, placed);
+            return PASS;
+        }
+
+        e.setCancelled(true);
+        updateHashMaps(p, placed);
+        return new CheckResult(NAME, true, p);
+
     }
 
-    /**
-     * Update the HashMaps for the next block
-     * @param p The player who placed the block
-     * @param placed The block that was placed
-     */
-    private void updateMaps(Player p, Block placed) {
-        lastBlockPlaced.replace(p, placed);
-        lastLocation.replace(p, p.getLocation());
-        lastDifference.put(p, System.currentTimeMillis() - lastBlockPlacedTime.get(p));
-        lastBlockPlacedTime.replace(p, System.currentTimeMillis());
-        lastVelocityY.replace(p, p.getVelocity().getY());
+    private void updateHashMaps(Player p, Block placed) {
+
+        if(lastBlocks.get(p).size() > 15) {
+            lastBlocks.get(p).clear();
+        }
+        if(lastLocations.get(p).size() > 15) {
+            lastLocations.get(p).clear();
+        }
+
+        lastBlocks.get(p).add(placed);
+        lastLocations.get(p).add(p.getLocation());
+        lastDifference.replace(p, System.currentTimeMillis() - lastBlockTime.get(p));
+        lastBlockTime.replace(p, System.currentTimeMillis());
     }
 
 
