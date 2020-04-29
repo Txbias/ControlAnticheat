@@ -1,6 +1,8 @@
 package de.valorit.cac.checks.movement;
 
+import de.valorit.cac.User;
 import de.valorit.cac.checks.CheckResult;
+import de.valorit.cac.checks.CheckResultsManager;
 import de.valorit.cac.checks.Module;
 import de.valorit.cac.utils.Permissions;
 import de.valorit.cac.utils.PlayerUtils;
@@ -22,6 +24,7 @@ public class FlightCheck {
     double lastDistance = -1;
     public CheckResult performCheck(PlayerMoveEvent e) {
         Player p = e.getPlayer();
+        User user = CheckResultsManager.getUser(p);
 
         Location from = e.getFrom();
         Location to = e.getTo();
@@ -34,6 +37,10 @@ public class FlightCheck {
             p.hasPermission(Permissions.BYPASS)) {
             lastDistance = Utils.round(distance);
             lastDifferenceY = differenceY;
+            return PASS;
+        }
+
+        if(user.isPushed()) {
             return PASS;
         }
 

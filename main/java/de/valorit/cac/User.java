@@ -20,6 +20,7 @@ public class User {
     private boolean inventoryOpen = false;
     private boolean attack = true;
     private boolean receivesNotifications = false;
+    private boolean pushed = false;
 
     private long lastDeath;
     private long bowStarted = -1;
@@ -60,6 +61,10 @@ public class User {
         return receivesNotifications;
     }
 
+    public boolean isPushed() {
+        return pushed;
+    }
+
     public void setUsingBow(boolean using) {
         this.usingBow = using;
         if(using) {
@@ -80,6 +85,10 @@ public class User {
         this.receivesNotifications = value;
     }
 
+    public void setPushed(boolean pushed) {
+        this.pushed = pushed;
+    }
+
     public void setLastDeath(long lastDeath) {
         this.lastDeath = lastDeath;
     }
@@ -93,11 +102,11 @@ public class User {
     }
 
     public int getLevel(int index) {
-        return (new ArrayList<Integer>(levels.values())).get(index);
+        return (new ArrayList<>(levels.values())).get(index);
     }
 
     public Module getModule(int index) {
-        return (new ArrayList<Module>(levels.keySet())).get(index);
+        return (new ArrayList<>(levels.keySet())).get(index);
     }
 
     public long getBowStarted() {

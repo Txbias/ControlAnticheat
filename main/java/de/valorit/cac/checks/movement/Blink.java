@@ -25,6 +25,10 @@ public class Blink {
             return;
         }
 
+        if(user.isPushed()) {
+            return;
+        }
+
         if(lastLocation == null) {
             lastLocation = p.getLocation();
         }

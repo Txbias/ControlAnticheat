@@ -1,5 +1,6 @@
 package de.valorit.cac.events;
 
+import de.valorit.cac.Main;
 import de.valorit.cac.User;
 import de.valorit.cac.checks.CheckResult;
 import de.valorit.cac.checks.CheckResultsManager;
@@ -7,6 +8,8 @@ import de.valorit.cac.checks.Module;
 import de.valorit.cac.checks.combat.FastBow;
 import de.valorit.cac.checks.player.ReachCheck;
 import de.valorit.cac.utils.GameEvent;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Creeper;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -45,7 +48,11 @@ public class CombatEvent extends GameEvent implements Listener {
                 e.setCancelled(true);
                 addCheckResult(new CheckResult(Module.KILLAURA, true, (Player) e.getDamager()));
             }
-
+        } else if(e.getDamager() instanceof Creeper && e.getEntity() instanceof Player) {
+            Player p = (Player) e.getEntity();
+            User user = CheckResultsManager.getUser(p);
+            user.setPushed(true);
+            Bukkit.getScheduler().runTaskLaterAsynchronously(Main.getInstance(), () -> user.setPushed(false), 20*3);
         }
 
     }
