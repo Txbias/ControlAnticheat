@@ -11,6 +11,9 @@ maxPing: 400
 # The maximum range a player is allowed to have when hitting an entity.
 maxCombatRange: 4
 
+# If set to true players will get kicked automatically
+autoKick: true
+
 # If set to true players will get banned automatically.
 autoBan: true
 
@@ -23,3 +26,5 @@ maxFlagsPerModule: 15
 # The maximum amount of flags a player is allowed to have before getting banned.
 maxFlagsTotal: 30
 
+# if st to true hacking alerts will also be shown in console
+alertsInConsole: true

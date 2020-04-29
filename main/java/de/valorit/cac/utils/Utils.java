@@ -1,5 +1,6 @@
 package de.valorit.cac.utils;
 
+import de.valorit.cac.Config;
 import de.valorit.cac.User;
 import de.valorit.cac.checks.CheckResult;
 import de.valorit.cac.checks.CheckResultsManager;
@@ -22,6 +23,13 @@ public class Utils {
                 }
             }
         }
+        if(Config.areAlertsInConsoleEnabled()) {
+            Player p = result.getPlayer();
+            User user = CheckResultsManager.getUser(p);
+            Bukkit.getConsoleSender().sendMessage("CAC >> The player " + p.getName() + "(" +
+                    PacketVersionManager.getCraftPlayerManager().getPing(p) + "ms) failed " + result.getModule() + " (vl: " +
+                    user.getLevel(result.getModule()) + ")");
+        }
     }
 
     public static void broadCastWarning(String warning) {
@@ -32,6 +40,9 @@ public class Utils {
                     Utils.sendWarning(p, warning);
                 }
             }
+        }
+        if(Config.areAlertsInConsoleEnabled()) {
+            Bukkit.getConsoleSender().sendMessage(warning);
         }
     }
 

@@ -20,7 +20,9 @@ public class Config {
     private static int maxPackets;
     private static int maxPing;
     private static double maxCombatRange;
+    private static boolean alertsInConsole;
 
+    private static boolean autoKick;
     private static boolean autoBan;
     private static String banCommand;
     private static int maxFlagsPerModule;
@@ -36,10 +38,12 @@ public class Config {
         maxPing = config.getInt("maxPing");
         maxCombatRange = config.getDouble("maxCombatRange");
 
+        autoKick = config.getBoolean("autoKick");
         autoBan = config.getBoolean("autoBan");
         banCommand = config.getString("banCommand");
         maxFlagsPerModule = config.getInt("maxFlagsPerModule");
         maxFlagsTotal = config.getInt("maxFlagsTotal");
+        alertsInConsole = config.getBoolean("alertsInConsole");
     }
 
     public static void reloadConfig() {
@@ -68,8 +72,16 @@ public class Config {
         return maxCombatRange;
     }
 
+    public static boolean isAutoKickEnabled() {
+        return autoKick;
+    }
+
     public static boolean isAutoBanEnabled() {
         return autoBan;
+    }
+
+    public static boolean areAlertsInConsoleEnabled() {
+        return alertsInConsole;
     }
 
     public static String getBanCommand() {
