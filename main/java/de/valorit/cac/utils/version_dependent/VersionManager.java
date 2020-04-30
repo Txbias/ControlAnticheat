@@ -64,4 +64,8 @@ public class VersionManager {
         return craftPlayerManager;
     }
 
+    public static String getVersion() {
+        return version;
+    }
+
 }

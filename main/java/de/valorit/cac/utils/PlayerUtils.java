@@ -2,6 +2,7 @@ package de.valorit.cac.utils;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
@@ -68,11 +69,7 @@ public class PlayerUtils {
 
     public static boolean isInLiquid(Player p) {
         Material m = p.getLocation().getBlock().getType();
-        if(m == Material.STATIONARY_WATER || m == Material.WATER || m == Material.STATIONARY_LAVA || m == Material.LAVA) {
-            return true;
-        } else {
-            return false;
-        }
+        return m == Material.STATIONARY_WATER || m == Material.WATER || m == Material.STATIONARY_LAVA || m == Material.LAVA;
     }
 
     public static boolean blockOverPlayer(Player p) {
@@ -85,6 +82,29 @@ public class PlayerUtils {
         Material m = b.getType();
 
         return liquids.contains(m);
+    }
+
+    /**
+     * Checks if there are any block in a 3x3 square below the player
+     * @return Returns true if blocks were found
+     */
+    public static boolean isPlatformBelow(Player p ) {
+        Block belowPlayer = getBlockUnderPlayer(p);
+        World world = p.getLocation().getWorld();
+
+        if(belowPlayer.getType() != Material.AIR && !belowPlayer.isLiquid()) {
+            return true;
+        }
+
+        for(int x = -1; x <= 1; x++) {
+            for(int z = -1; z <= 1; z++) {
+                Block b = world.getBlockAt(belowPlayer.getLocation().add(x, 0, z));
+                if(b.getType() != Material.AIR && !b.isLiquid()) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     public static Location getNPCLocation(Player p) {
