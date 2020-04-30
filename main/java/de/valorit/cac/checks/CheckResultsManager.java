@@ -22,6 +22,9 @@ public class CheckResultsManager {
             List<User> flaggedUsers = new ArrayList<>();
 
             for (int i = 0; i < results.size(); i++) {
+                if(results.get(i) == null) {
+                    continue;
+                }
                 if (results.get(i).isHacking) {
                     User user = getUser(results.get(i).getPlayer());
                     user.incrementLevel(results.get(i).getModule());
