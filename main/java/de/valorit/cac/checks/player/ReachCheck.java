@@ -7,6 +7,7 @@ import de.valorit.cac.utils.Permissions;
 import de.valorit.cac.utils.version_dependent.VersionManager;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
@@ -23,12 +24,12 @@ public class ReachCheck {
 
     public CheckResult performCheck(EntityDamageByEntityEvent e) {
 
-        if(!(e.getDamager() instanceof Player) || (!(e.getEntity() instanceof  Player))) {
+        if(!(e.getDamager() instanceof Player)) {
             return PASS;
         }
 
         Player p = (Player) e.getDamager();
-        Player damaged = (Player) e.getEntity();
+        Entity damaged = e.getEntity();
 
         if(p.hasPermission(Permissions.BYPASS)) {
             return PASS;
@@ -39,7 +40,13 @@ public class ReachCheck {
         }
 
         Location playerLocation = p.getEyeLocation();
-        Location damagedLocation = damaged.getEyeLocation();
+        Location damagedLocation;
+        if(damaged instanceof  Player) {
+            damagedLocation = ((Player) damaged).getEyeLocation();
+        } else {
+            damagedLocation = damaged.getLocation();
+        }
+
 
         double distance = playerLocation.distance(damagedLocation);
 
