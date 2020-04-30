@@ -5,7 +5,7 @@ import de.valorit.cac.checks.combat.Killaura;
 import de.valorit.cac.commands.CacCommand;
 import de.valorit.cac.commands.PingCommand;
 import de.valorit.cac.events.*;
-import de.valorit.cac.utils.packets.PacketVersionManager;
+import de.valorit.cac.utils.version_dependent.VersionManager;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -18,7 +18,7 @@ public class Main extends JavaPlugin {
     CheckResultsManager resultsManager = new CheckResultsManager();
     PluginManager pluginManager = getServer().getPluginManager();
 
-    PacketVersionManager packetVersionManager = new PacketVersionManager();
+    VersionManager versionManager = new VersionManager();
 
     Killaura killaura = new Killaura();
 
@@ -31,7 +31,7 @@ public class Main extends JavaPlugin {
 
         setInstance(this);
 
-        if(packetVersionManager.setupNPC()) {
+        if(versionManager.setupNPC()) {
             System.out.println("CAC is compatible!");
         } else {
             System.out.println("The server version is not compatible with CAC!");

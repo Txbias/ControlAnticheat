@@ -2,7 +2,7 @@ package de.valorit.cac.commands;
 
 import de.valorit.cac.utils.Permissions;
 import de.valorit.cac.utils.Utils;
-import de.valorit.cac.utils.packets.PacketVersionManager;
+import de.valorit.cac.utils.version_dependent.VersionManager;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -20,7 +20,7 @@ public class PingCommand implements CommandExecutor {
                 if(p.isOp() || p.hasPermission(Permissions.PING) || p.hasPermission(Permissions.ADMIN)) {
                      if(args.length == 0) {
                          //Player asks for own ping
-                         Utils.sendMessage(p, "Your ping: §6" + PacketVersionManager.getCraftPlayerManager().getPing(p) + "ms");
+                         Utils.sendMessage(p, "Your ping: §6" + VersionManager.getCraftPlayerManager().getPing(p) + "ms");
                          return true;
                      } else if(args.length == 1) {
                          //Player asks for the ping of other player
@@ -30,7 +30,7 @@ public class PingCommand implements CommandExecutor {
                              return false;
                          }
 
-                         Utils.sendMessage(p, args[0] + "'s ping: §6" +  PacketVersionManager.getCraftPlayerManager().getPing(target) + "ms");
+                         Utils.sendMessage(p, args[0] + "'s ping: §6" +  VersionManager.getCraftPlayerManager().getPing(target) + "ms");
                          return true;
                      } else {
                          Utils.sendError(p, "Usage: /ping <Player>");
@@ -53,7 +53,7 @@ public class PingCommand implements CommandExecutor {
                     return false;
                 }
 
-                Utils.sendMessage(sender, args[0] + "s ping: §6" + PacketVersionManager.getCraftPlayerManager().getPing(target) + "ms");
+                Utils.sendMessage(sender, args[0] + "s ping: §6" + VersionManager.getCraftPlayerManager().getPing(target) + "ms");
                 return true;
             }
         }

@@ -1,24 +1,23 @@
-package de.valorit.cac.utils.packets.npc;
+package de.valorit.cac.utils.version_dependent.packets.npc;
+
 
 import com.mojang.authlib.GameProfile;
-import net.minecraft.server.v1_12_R1.*;
+import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.craftbukkit.v1_12_R1.CraftServer;
-import org.bukkit.craftbukkit.v1_12_R1.CraftWorld;
-import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_8_R3.CraftServer;
+import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
 
-public class NPC_1_12_R1 implements NPC{
-
+public class NPC_1_8_R3 implements NPC{
 
     private ArrayList<Player> npcPlayers = new ArrayList<>();
     private HashMap<Player, EntityPlayer> npcs = new HashMap<>();
-
 
     @Override
     public void spawn(Player p, Location loc, String name) {
@@ -48,8 +47,8 @@ public class NPC_1_12_R1 implements NPC{
             System.out.println("NPC not found!");
             return;
         }
-        npcPlayers.remove(npcPlayer);
 
+        npcPlayers.remove(npcPlayer);
         EntityPlayer npc = npcs.get(p);
         npcs.remove(p);
 
@@ -76,5 +75,4 @@ public class NPC_1_12_R1 implements NPC{
         }
         return null;
     }
-
 }

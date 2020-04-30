@@ -8,6 +8,7 @@ import de.valorit.cac.utils.Permissions;
 import de.valorit.cac.utils.PlayerUtils;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.potion.PotionEffectType;
@@ -38,11 +39,23 @@ public class SpeedCheck {
             return PASS;
         }
 
+        if(user.isUsingElytra()) {
+            return PASS;
+        }
+
         if(vectorDistance == 0 || p.isInsideVehicle() || p.getFallDistance() > 1.2) {
             return PASS;
         }
 
         if(p.getGameMode() == GameMode.CREATIVE || PlayerUtils.isInLiquid(p)) {
+            return PASS;
+        }
+
+        if(PlayerUtils.isLiquid(PlayerUtils.getBlockUnderPlayer(p))) {
+            return PASS;
+        }
+        
+        if(PlayerUtils.getBlockMaterialUnderPlayer(p) == Material.AIR) {
             return PASS;
         }
 
@@ -55,9 +68,13 @@ public class SpeedCheck {
         }
         if(vectorDistance > maxDistance) {
             if(p.getVelocity().getY() != 0 && (p.getVelocity().getX() != 0 || p.getVelocity().getZ() != 0)) {
-                //Player is hacking
-                p.teleport(from);
-                return new CheckResult(NAME, true, p);
+                if(!(p.getVelocity().getY() > 0.75) && vectorDistance < 0.8) {
+                    //Player is hacking
+                    System.out.println("Velocity: " + p.getVelocity());
+                    System.out.println("distance: " + vectorDistance);
+                    p.teleport(from);
+                    return new CheckResult(NAME, true, p);
+                }
             }
         }
 

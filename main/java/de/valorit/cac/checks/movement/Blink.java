@@ -29,6 +29,10 @@ public class Blink {
             return;
         }
 
+        if(user.isUsingElytra()) {
+            return;
+        }
+
         if(lastLocation == null) {
             lastLocation = p.getLocation();
         }

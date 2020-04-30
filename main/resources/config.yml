@@ -3,7 +3,7 @@ minTimeBetweenBowShots: 149
 
 # The maximum amount of packets a player is allowed to send per second. If a client sends more packets,
 # all players with the cac.notify permission will be notified.
-maxPackets: 80
+maxPackets: 90
 
 # The maximum ping a player can have to still be checked
 maxPing: 400

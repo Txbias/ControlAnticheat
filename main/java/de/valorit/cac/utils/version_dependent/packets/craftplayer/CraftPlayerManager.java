@@ -1,4 +1,4 @@
-package de.valorit.cac.utils.packets.craftplayer;
+package de.valorit.cac.utils.version_dependent.packets.craftplayer;
 
 import org.bukkit.entity.Player;
 

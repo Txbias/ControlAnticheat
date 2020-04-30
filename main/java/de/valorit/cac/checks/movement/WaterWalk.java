@@ -1,6 +1,8 @@
 package de.valorit.cac.checks.movement;
 
+import de.valorit.cac.User;
 import de.valorit.cac.checks.CheckResult;
+import de.valorit.cac.checks.CheckResultsManager;
 import de.valorit.cac.checks.Module;
 import de.valorit.cac.utils.Permissions;
 import de.valorit.cac.utils.PlayerUtils;
@@ -24,6 +26,7 @@ public class WaterWalk {
     public CheckResult performCheck(PlayerMoveEvent e) {
 
         Player p = e.getPlayer();
+        User user = CheckResultsManager.getUser(p);
         Block blockUnderPlayer = PlayerUtils.getBlockUnderPlayer(p);
         Material underPlayer = PlayerUtils.getBlockMaterialUnderPlayer(p);
         Location from = e.getFrom();
@@ -38,6 +41,10 @@ public class WaterWalk {
             LAST_BLOCK.put(p, PlayerUtils.getBlockUnderPlayer(p));
         }
 
+        if(user.isUsingElytra()) {
+            updateLastBlock(p);
+            return PASS;
+        }
 
         if(PlayerUtils.isLiquid(blockUnderPlayer) && !(underPlayer == Material.WATER) && !(underPlayer == Material.LAVA)) {
             if(!PlayerUtils.isInLiquid(p) && PlayerUtils.isLiquid(LAST_BLOCK.get(p)) && !(PlayerUtils.isLiquid(PlayerUtils.getBlockInFront(p)))) {

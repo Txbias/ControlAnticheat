@@ -3,8 +3,8 @@ package de.valorit.cac;
 import de.valorit.cac.checks.Module;
 import de.valorit.cac.utils.Permissions;
 import de.valorit.cac.utils.Settings;
-import de.valorit.cac.utils.packets.PacketVersionManager;
-import de.valorit.cac.utils.packets.packetreader.PacketReader;
+import de.valorit.cac.utils.version_dependent.VersionManager;
+import de.valorit.cac.utils.version_dependent.packets.packetreader.PacketReader;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -21,6 +21,7 @@ public class User {
     private boolean attack = true;
     private boolean receivesNotifications = false;
     private boolean pushed = false;
+    private boolean usingElytra = false;
 
     private long lastDeath;
     private long bowStarted = -1;
@@ -41,7 +42,7 @@ public class User {
             receivesNotifications = true;
         }
 
-        reader = PacketVersionManager.getPacketReader();
+        reader = VersionManager.getPacketReader();
         reader.inject(p);
     }
 
@@ -63,6 +64,10 @@ public class User {
 
     public boolean isPushed() {
         return pushed;
+    }
+
+    public boolean isUsingElytra() {
+        return usingElytra;
     }
 
     public void setUsingBow(boolean using) {
@@ -87,6 +92,10 @@ public class User {
 
     public void setPushed(boolean pushed) {
         this.pushed = pushed;
+    }
+
+    public void setUsingElytra(boolean using) {
+        usingElytra = using;
     }
 
     public void setLastDeath(long lastDeath) {

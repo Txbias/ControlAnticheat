@@ -4,7 +4,7 @@ import de.valorit.cac.Config;
 import de.valorit.cac.User;
 import de.valorit.cac.checks.CheckResult;
 import de.valorit.cac.checks.CheckResultsManager;
-import de.valorit.cac.utils.packets.PacketVersionManager;
+import de.valorit.cac.utils.version_dependent.VersionManager;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -27,7 +27,7 @@ public class Utils {
             Player p = result.getPlayer();
             User user = CheckResultsManager.getUser(p);
             Bukkit.getConsoleSender().sendMessage("CAC >> The player " + p.getName() + "(" +
-                    PacketVersionManager.getCraftPlayerManager().getPing(p) + "ms) failed " + result.getModule() + " (vl: " +
+                    VersionManager.getCraftPlayerManager().getPing(p) + "ms) failed " + result.getModule() + " (vl: " +
                     user.getLevel(result.getModule()) + ")");
         }
     }
@@ -89,7 +89,7 @@ public class Utils {
         User user = CheckResultsManager.getUser(result.getPlayer());
         int level = user.getLevel(result.getModule());
 
-        receiver.sendMessage(PREFIX + " The player §c" + user.getPlayer().getName() + "§7 ("+ PacketVersionManager.getCraftPlayerManager().getPing(user.getPlayer())
+        receiver.sendMessage(PREFIX + " The player §c" + user.getPlayer().getName() + "§7 ("+ VersionManager.getCraftPlayerManager().getPing(user.getPlayer())
                 + "ms) failed " + result.getModule() + " (vl: §c" + level + "§7)");
     }
 

@@ -5,7 +5,7 @@ import de.valorit.cac.checks.CheckResult;
 import de.valorit.cac.checks.Module;
 import de.valorit.cac.utils.Permissions;
 import de.valorit.cac.utils.PlayerUtils;
-import de.valorit.cac.utils.packets.PacketVersionManager;
+import de.valorit.cac.utils.version_dependent.VersionManager;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -33,9 +33,9 @@ public class TowerCheck {
             return PASS;
         }
 
-        if(PacketVersionManager.getCraftPlayerManager().getPing(p) > Config.getMaxPing()) {
+        if(VersionManager.getCraftPlayerManager().getPing(p) > Config.getMaxPing()) {
             System.out.println(1);
-            System.out.println(PacketVersionManager.getCraftPlayerManager().getPing(p));
+            System.out.println(VersionManager.getCraftPlayerManager().getPing(p));
             System.out.println(Config.getMaxPing());
             return PASS;
         }

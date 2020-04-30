@@ -4,7 +4,7 @@ import de.valorit.cac.Config;
 import de.valorit.cac.checks.CheckResult;
 import de.valorit.cac.checks.Module;
 import de.valorit.cac.utils.Permissions;
-import de.valorit.cac.utils.packets.PacketVersionManager;
+import de.valorit.cac.utils.version_dependent.VersionManager;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -34,7 +34,7 @@ public class ReachCheck {
             return PASS;
         }
 
-        if(PacketVersionManager.getCraftPlayerManager().getPing(p) > Config.getMaxPing()) {
+        if(VersionManager.getCraftPlayerManager().getPing(p) > Config.getMaxPing()) {
             return PASS;
         }
 

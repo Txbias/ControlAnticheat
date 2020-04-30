@@ -6,8 +6,8 @@ import de.valorit.cac.checks.Module;
 import de.valorit.cac.utils.GameEvent;
 import de.valorit.cac.utils.Permissions;
 import de.valorit.cac.utils.PlayerUtils;
-import de.valorit.cac.utils.packets.PacketVersionManager;
-import de.valorit.cac.utils.packets.npc.NPC;
+import de.valorit.cac.utils.version_dependent.VersionManager;
+import de.valorit.cac.utils.version_dependent.packets.npc.NPC;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -32,7 +32,7 @@ public class Killaura {
 
         String npcName = SPAWNED_NPCs.get(p);
 
-        if(PacketVersionManager.getNPC().getEntityID(npcName) == entityID) {
+        if(VersionManager.getNPC().getEntityID(npcName) == entityID) {
             //Player is hacking
             GameEvent.addCheckResult(new CheckResult(NAME, true, p));
         }
@@ -49,7 +49,7 @@ public class Killaura {
                     if (System.currentTimeMillis() - PLAYERS.get(p) >= 10 * 1000) {
                         //Spawn NPCs every 10 seconds
 
-                        NPC npc = PacketVersionManager.getNPC();
+                        NPC npc = VersionManager.getNPC();
 
                         String name = generateName();
 
@@ -61,7 +61,7 @@ public class Killaura {
                     }
                 } else {
                     String npcName = SPAWNED_NPCs.get(p);
-                    PacketVersionManager.getNPC().destroy(p, npcName);
+                    VersionManager.getNPC().destroy(p, npcName);
 
                     CHECKED.remove(p);
                 }

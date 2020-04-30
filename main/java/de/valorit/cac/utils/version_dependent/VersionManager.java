@@ -1,17 +1,18 @@
-package de.valorit.cac.utils.packets;
+package de.valorit.cac.utils.version_dependent;
 
 import de.valorit.cac.Main;
-import de.valorit.cac.utils.packets.craftplayer.CraftPlayerManager;
-import de.valorit.cac.utils.packets.craftplayer.CraftPlayerManager_1_12_R1;
-import de.valorit.cac.utils.packets.craftplayer.CraftPlayerManager_1_8_R3;
-import de.valorit.cac.utils.packets.npc.NPC;
-import de.valorit.cac.utils.packets.npc.NPC_1_12_R1;
-import de.valorit.cac.utils.packets.npc.NPC_1_8_R3;
-import de.valorit.cac.utils.packets.packetreader.PacketReader;
-import de.valorit.cac.utils.packets.packetreader.PacketReader_1_12_R1;
-import de.valorit.cac.utils.packets.packetreader.PacketReader_1_8_R3;
+import de.valorit.cac.utils.version_dependent.events.GlideEvent;
+import de.valorit.cac.utils.version_dependent.packets.craftplayer.CraftPlayerManager;
+import de.valorit.cac.utils.version_dependent.packets.craftplayer.CraftPlayerManager_1_12_R1;
+import de.valorit.cac.utils.version_dependent.packets.craftplayer.CraftPlayerManager_1_8_R3;
+import de.valorit.cac.utils.version_dependent.packets.npc.NPC;
+import de.valorit.cac.utils.version_dependent.packets.npc.NPC_1_12_R1;
+import de.valorit.cac.utils.version_dependent.packets.npc.NPC_1_8_R3;
+import de.valorit.cac.utils.version_dependent.packets.packetreader.PacketReader;
+import de.valorit.cac.utils.version_dependent.packets.packetreader.PacketReader_1_12_R1;
+import de.valorit.cac.utils.version_dependent.packets.packetreader.PacketReader_1_8_R3;
 
-public class PacketVersionManager {
+public class VersionManager {
 
     private static NPC npc;
     private static PacketReader packetReader;
@@ -35,6 +36,9 @@ public class PacketVersionManager {
             npc = new NPC_1_12_R1();
             packetReader = new PacketReader_1_12_R1();
             craftPlayerManager = new CraftPlayerManager_1_12_R1();
+
+            //Register Event
+            Main.getInstance().getServer().getPluginManager().registerEvents(new GlideEvent(), Main.getInstance());
         }
 
 

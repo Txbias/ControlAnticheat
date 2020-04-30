@@ -1,4 +1,4 @@
-package de.valorit.cac.utils.packets.packetreader;
+package de.valorit.cac.utils.version_dependent.packets.packetreader;
 
 import de.valorit.cac.Config;
 import de.valorit.cac.checks.CheckResultsManager;
@@ -9,19 +9,18 @@ import de.valorit.cac.utils.Utils;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToMessageDecoder;
-import net.minecraft.server.v1_8_R3.Packet;
-import net.minecraft.server.v1_8_R3.PacketPlayInCloseWindow;
-import net.minecraft.server.v1_8_R3.PacketPlayInFlying;
-import net.minecraft.server.v1_8_R3.PacketPlayInUseEntity;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
+import net.minecraft.server.v1_12_R1.Packet;
+import net.minecraft.server.v1_12_R1.PacketPlayInCloseWindow;
+import net.minecraft.server.v1_12_R1.PacketPlayInFlying;
+import net.minecraft.server.v1_12_R1.PacketPlayInUseEntity;
+import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
-
-public class PacketReader_1_8_R3 implements PacketReader{
+public class PacketReader_1_12_R1  implements PacketReader{
 
     private Player player;
     private Channel channel;
@@ -33,11 +32,11 @@ public class PacketReader_1_8_R3 implements PacketReader{
     private ArrayList<String> packets = new ArrayList<>();
     private int attacksCount = 0;
 
-
     @Override
     public void inject(Player p) {
         this.player = p;
         injectorName = p.getName();
+
         this.blink = new Blink();
 
         CraftPlayer cPlayer = (CraftPlayer) player;
@@ -47,12 +46,11 @@ public class PacketReader_1_8_R3 implements PacketReader{
             @Override
             protected void decode(ChannelHandlerContext channelHandlerContext, Packet<?> packet, List<Object> list) throws Exception {
                 list.add(packet);
-                PacketReader_1_8_R3.packet = packet;
+                PacketReader_1_12_R1.packet = packet;
                 readPacket();
             }
 
         });
-
     }
 
     long lastClear = System.currentTimeMillis();
@@ -77,20 +75,20 @@ public class PacketReader_1_8_R3 implements PacketReader{
             } else {
                 CheckResultsManager.getUser(player).setCanAttack(true);
             }
+            attacksCount = 0;
             packets.clear();
             lastClear = System.currentTimeMillis();
-            attacksCount = 0;
         }
 
+
         if(packet instanceof PacketPlayInUseEntity) {
-            PacketPlayInUseEntity playInUseEntity = (PacketPlayInUseEntity) packet;
-            int id = (int) getValue(playInUseEntity, "a");
-            String use = getValue(playInUseEntity, "action").toString();
+            PacketPlayInUseEntity packetPlayInUseEntity = (PacketPlayInUseEntity) packet;
+            int id = (int) getValue(packetPlayInUseEntity, "a");
+            String use = getValue(packetPlayInUseEntity, "action").toString();
 
             if(use != null) {
                 if(use.equalsIgnoreCase("ATTACK")) {
                     Killaura.performCheck(id, player);
-
                     attacksCount++;
                 }
             }
@@ -100,6 +98,7 @@ public class PacketReader_1_8_R3 implements PacketReader{
             blink.performCheck(player);
         }
     }
+
 
     @Override
     public void uninject() {
@@ -114,21 +113,20 @@ public class PacketReader_1_8_R3 implements PacketReader{
             Field field = obj.getClass().getDeclaredField(name);
             field.setAccessible(true);
             field.set(obj, value);
-        } catch (NoSuchFieldException | IllegalAccessException e) {
+        } catch (IllegalAccessException | NoSuchFieldException e) {
             e.printStackTrace();
-            System.out.println(obj.getClass());
         }
     }
 
+
     @Override
-    public Object getValue(Object obj, String name){
+    public Object getValue(Object obj, String name) {
         try {
             Field field = obj.getClass().getDeclaredField(name);
             field.setAccessible(true);
             return field.get(obj);
         } catch (IllegalAccessException | NoSuchFieldException e) {
             e.printStackTrace();
-            System.out.println(obj.getClass());
         }
         return null;
     }

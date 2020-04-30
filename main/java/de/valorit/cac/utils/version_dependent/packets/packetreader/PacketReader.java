@@ -1,4 +1,4 @@
-package de.valorit.cac.utils.packets.packetreader;
+package de.valorit.cac.utils.version_dependent.packets.packetreader;
 
 import org.bukkit.entity.Player;
 

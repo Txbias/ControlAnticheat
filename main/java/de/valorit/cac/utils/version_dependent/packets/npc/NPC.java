@@ -1,4 +1,4 @@
-package de.valorit.cac.utils.packets.npc;
+package de.valorit.cac.utils.version_dependent.packets.npc;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
