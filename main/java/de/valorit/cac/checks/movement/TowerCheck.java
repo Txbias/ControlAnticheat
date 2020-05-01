@@ -34,9 +34,6 @@ public class TowerCheck {
         }
 
         if(VersionManager.getCraftPlayerManager().getPing(p) > Config.getMaxPing()) {
-            System.out.println(1);
-            System.out.println(VersionManager.getCraftPlayerManager().getPing(p));
-            System.out.println(Config.getMaxPing());
             return PASS;
         }
 

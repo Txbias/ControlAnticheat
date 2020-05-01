@@ -75,7 +75,6 @@ public class FlightCheck {
                                     //Player is hacking
                                     updateHashMaps(e);
                                     punish(e);
-                                    System.out.println(1);
                                     System.out.println(System.currentTimeMillis() - elytraByPass.get(p));
                                     return new CheckResult(NAME, true, p);
                                 } else {
@@ -87,14 +86,12 @@ public class FlightCheck {
                                     updateHashMaps(e);
                                     return PASS;
                                 }
-                                System.out.println(2);
                                 updateHashMaps(e);
                                 punish(e);
                                 return new CheckResult(NAME, true, p);
 
                             }
                         } else {
-                            System.out.println(3);
                             updateHashMaps(e);
                             punish(e);
                             return new CheckResult(NAME, true, p);
