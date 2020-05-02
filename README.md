@@ -15,12 +15,16 @@ Movement:
 - Glide
 - Blink
 - Inventorymove
-- Nofall
+- Tower
 
 Combat:
 - Killaura (won't be prevented but registered)
 - Fastbow
 - Reach
+
+Player:
+- Ghosthand (open chests through walls)
+- Nofall
 
 ### Commands:
 - /cac info [player] - Shows which cheats were detected.
@@ -38,28 +42,35 @@ Combat:
 
 ### Config:
 ```
-minTimeBetweenBowShots: 149  
-maxPackets: 80 
-maxPing: 300  
-maxCombatRange: 4  
+# The minimum time between two bow shots allowed. (in milliseconds)
+minTimeBetweenBowShots: 149
+
+# The maximum amount of packets a player is allowed to send per second. If a client sends more packets,
+# all players with the cac.notify permission will be notified.
+maxPackets: 80
+
+# The maximum ping a player can have to still be checked
+maxPing: 400
+
+# The maximum range a player is allowed to have when hitting an entity.
+maxCombatRange: 4
+
+# If set to true players will get banned automatically.
+autoBan: true
+
+# The command that will be executed to ban a player.
+banCommand: /ban [player]
+
+# The maximum amount of flags a player is allowed to have per cheat before getting banned.
+maxFlagsPerModule: 15
+
+# The maximum amount of flags a player is allowed to have before getting banned.
+maxFlagsTotal: 30  
 ```
-##### minTimeBetweenBowShots: 
-The amount of milliseconds between 2 bow shots
-##### maxPackets:
-he maximum amount of packets that a client can send in 1 second. If a client sends more packets, all players with the cac.notify
-permission will get notified
-##### maxPing:
-If a player has a higher ping he won't be checked
-##### maxCombatRange:
-The maximum reach a player can have
-
-
 
 
  
 ## Comming soon:
-
--autobans and autokicks
 
 -performance improvements
 
