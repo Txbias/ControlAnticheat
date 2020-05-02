@@ -1,7 +1,6 @@
 package de.valorit.cac;
 
 import de.valorit.cac.checks.CheckResultsManager;
-import de.valorit.cac.checks.combat.Killaura;
 import de.valorit.cac.commands.CacCommand;
 import de.valorit.cac.commands.PingCommand;
 import de.valorit.cac.events.*;
@@ -19,8 +18,6 @@ public class Main extends JavaPlugin {
     PluginManager pluginManager = getServer().getPluginManager();
 
     VersionManager versionManager = new VersionManager();
-
-    Killaura killaura = new Killaura();
 
     @Override
     public void onEnable() {
@@ -44,8 +41,6 @@ public class Main extends JavaPlugin {
         Config.loadConfig();
         saveDefaultConfig();
         resultsManager.handleCheckResults();
-
-        killaura.enableChecks();
     }
 
     @Override

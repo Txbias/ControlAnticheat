@@ -110,7 +110,7 @@ public class PlayerUtils {
     public static Location getNPCLocation(Player p) {
         Location loc = p.getLocation();
         Vector vec = loc.getDirection();
-        vec.multiply(-2.5D);
+        vec.multiply(-1.25D);
         loc.add(vec);
         loc.setX(loc.getX() + 1);
         loc.setZ(loc.getZ() + 1);

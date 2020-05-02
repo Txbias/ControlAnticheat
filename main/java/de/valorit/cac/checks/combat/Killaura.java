@@ -1,7 +1,10 @@
 package de.valorit.cac.checks.combat;
 
+import de.valorit.cac.Config;
 import de.valorit.cac.Main;
+import de.valorit.cac.User;
 import de.valorit.cac.checks.CheckResult;
+import de.valorit.cac.checks.CheckResultsManager;
 import de.valorit.cac.checks.Module;
 import de.valorit.cac.utils.GameEvent;
 import de.valorit.cac.utils.Permissions;
@@ -11,9 +14,7 @@ import de.valorit.cac.utils.version_dependent.packets.npc.NPC;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Random;
 
 
@@ -21,9 +22,8 @@ public class Killaura {
 
     private final static Module NAME = Module.KILLAURA;
 
-    private final List<Player> CHECKED = new ArrayList<>();
     private final static HashMap<Player, String> SPAWNED_NPCs = new HashMap<>();
-    private final static HashMap<Player, Long> PLAYERS = new HashMap<>();
+    private final static HashMap<Player, Long> LAST_CHECK = new HashMap<>();
 
     public static void performCheck(int entityID, Player p) {
         if(!SPAWNED_NPCs.containsKey(p)) {
@@ -39,47 +39,47 @@ public class Killaura {
 
     }
 
-    public void enableChecks() {
-        Bukkit.getScheduler().runTaskTimerAsynchronously(Main.getInstance(), () -> {
-            for(Player p : PLAYERS.keySet()) {
-                if(p.hasPermission(Permissions.BYPASS)) {
-                    continue;
-                }
-                if(!CHECKED.contains(p)) {
-                    if (System.currentTimeMillis() - PLAYERS.get(p) >= 10 * 1000) {
-                        //Spawn NPCs every 10 seconds
+    public static void spawnNPC(Player p) {
+        if(!LAST_CHECK.containsKey(p)) {
+            LAST_CHECK.put(p, 0L);
+            return;
+        }
 
-                        NPC npc = VersionManager.getNPC();
+        if(p.hasPermission(Permissions.BYPASS)) {
+            return;
+        } else if(VersionManager.getCraftPlayerManager().getPing(p) >= Config.getMaxPing()) {
+            return;
+        }
 
-                        String name = generateName();
+        User user = CheckResultsManager.getUser(p);
+        int timeBetweenSpawns = 10_000;
+        if(user.getLevel(Module.KILLAURA) > 1) {
+            timeBetweenSpawns = 9_000;
+        }
+        if(user.getLevel(Module.KILLAURA) > 8) {
+            timeBetweenSpawns = 8_000;
+        }
 
-                        SPAWNED_NPCs.put(p, name);
-                        npc.spawn(p, PlayerUtils.getNPCLocation(p), name);
+        //NPCs are allowed to spawn every 10 seconds at most
+        if(System.currentTimeMillis() - LAST_CHECK.get(p) >= timeBetweenSpawns) {
+            NPC npc = VersionManager.getNPC();
+            String name = generateName();
 
-                        PLAYERS.replace(p, System.currentTimeMillis());
-                        CHECKED.add(p);
-                    }
-                } else {
-                    String npcName = SPAWNED_NPCs.get(p);
-                    VersionManager.getNPC().destroy(p, npcName);
-
-                    CHECKED.remove(p);
-                }
-            }
-        }, 20 * 5, 20);
-
-
+            SPAWNED_NPCs.put(p, name);
+            npc.spawn(p, PlayerUtils.getNPCLocation(p), name);
+            LAST_CHECK.replace(p, System.currentTimeMillis());
+            despawnNPC(p);
+        }
     }
 
-    public static void addPlayer(Player p) {
-        PLAYERS.put(p, System.currentTimeMillis());
+    private static void despawnNPC(Player p) {
+        Bukkit.getScheduler().runTaskLaterAsynchronously(Main.getInstance(), () -> {
+            String npcName = SPAWNED_NPCs.get(p);
+            VersionManager.getNPC().destroy(p, npcName);
+        }, 20);
     }
 
-    public static void removePlayer(Player p) {
-        PLAYERS.remove(p);
-    }
-
-    private String generateName() {
+    private static String generateName() {
         StringBuilder builder = new StringBuilder();
         Random random = new Random();
         for(int i = 0; i < 12; i++) {

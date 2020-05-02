@@ -6,6 +6,7 @@ import de.valorit.cac.checks.CheckResult;
 import de.valorit.cac.checks.CheckResultsManager;
 import de.valorit.cac.checks.Module;
 import de.valorit.cac.checks.combat.FastBow;
+import de.valorit.cac.checks.combat.Killaura;
 import de.valorit.cac.checks.player.ReachCheck;
 import de.valorit.cac.utils.GameEvent;
 import org.bukkit.Bukkit;
@@ -43,6 +44,9 @@ public class CombatEvent extends GameEvent implements Listener {
         addCheckResult(reachCheck.performCheck(e));
 
         if(e.getDamager() instanceof Player) {
+
+            Killaura.spawnNPC((Player) e.getDamager());
+
             User user = CheckResultsManager.getUser((Player) e.getDamager());
             if(!user.canAttack()) {
                 e.setCancelled(true);
