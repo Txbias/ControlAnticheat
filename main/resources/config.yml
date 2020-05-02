@@ -26,5 +26,5 @@ maxFlagsPerModule: 15
 # The maximum amount of flags a player is allowed to have before getting banned.
 maxFlagsTotal: 30
 
-# if st to true hacking alerts will also be shown in console
+# if set to true hacking alerts will also be shown in console
 alertsInConsole: true
