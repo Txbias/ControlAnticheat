@@ -4,6 +4,7 @@ import de.valorit.cac.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 import java.io.IOException;
@@ -14,7 +15,8 @@ public class Config {
 
     private static final File CONFIG_FILE = new File("plugins/" + Utils.PLUGIN_NAME, "config.yml");
 
-    private static FileConfiguration config = Main.getInstance().getConfig();
+    private static FileConfiguration config = YamlConfiguration.loadConfiguration(CONFIG_FILE);
+    private static FileConfiguration mainConfig = Main.getInstance().getConfig();
 
     private static long minTimeBetweenBowShots;
     private static int maxPackets;
@@ -33,26 +35,35 @@ public class Config {
             PLUGIN.saveDefaultConfig();
         }
 
-        minTimeBetweenBowShots = config.getLong("minTimeBetweenBowShots");
-        maxPackets = config.getInt("maxPackets");
-        maxPing = config.getInt("maxPing");
-        maxCombatRange = config.getDouble("maxCombatRange");
+        minTimeBetweenBowShots = mainConfig.getLong("minTimeBetweenBowShots");
+        maxPackets = mainConfig.getInt("maxPackets");
+        maxPing = mainConfig.getInt("maxPing");
+        maxCombatRange = mainConfig.getDouble("maxCombatRange");
 
-        autoKick = config.getBoolean("autoKick");
-        autoBan = config.getBoolean("autoBan");
-        banCommand = config.getString("banCommand");
-        maxFlagsPerModule = config.getInt("maxFlagsPerModule");
-        maxFlagsTotal = config.getInt("maxFlagsTotal");
-        alertsInConsole = config.getBoolean("alertsInConsole");
+        autoKick = mainConfig.getBoolean("autoKick");
+        autoBan = mainConfig.getBoolean("autoBan");
+        banCommand = mainConfig.getString("banCommand");
+        maxFlagsPerModule = mainConfig.getInt("maxFlagsPerModule");
+        maxFlagsTotal = mainConfig.getInt("maxFlagsTotal");
+        alertsInConsole = mainConfig.getBoolean("alertsInConsole");
     }
 
     public static void reloadConfig() {
         try {
-            config = Main.getInstance().getConfig();
-            config.load(CONFIG_FILE);
+            mainConfig = Main.getInstance().getConfig();
+            mainConfig.load(CONFIG_FILE);
             loadConfig();
         } catch (IOException | InvalidConfigurationException e) {
             Utils.sendMessageToConsole(Bukkit.getServer().getConsoleSender(), "Couldn't reload config.");
+        }
+    }
+
+    public static void setBanCommand(String banCommand) {
+        config.set("banCommand", banCommand);
+        try {
+            config.save(CONFIG_FILE);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

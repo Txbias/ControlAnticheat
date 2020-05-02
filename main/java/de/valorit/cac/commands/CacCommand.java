@@ -27,6 +27,9 @@ public class CacCommand implements CommandExecutor {
             } else if(args.length == 1 && args[0].equalsIgnoreCase("notify")) {
                 //Disables notifications for a staff member
                 return handleNotify(sender, args);
+            } else if(args.length >= 3 && args[0].equalsIgnoreCase("setup")) {
+                //Lets you set the ban command
+                return handleSetup(sender, args);
             }
             else {
                 if(sender instanceof Player) {
@@ -42,6 +45,7 @@ public class CacCommand implements CommandExecutor {
                         "§6/cac info [name]§7: Shows which cheats were detected for a player\n" +
                         "§6/cac reload§7: Reloads the config\n" +
                         "§6/cac notify§7: Toggles your notifications\n" +
+                        "§6/cac setup [ban command]§7: Lets you set the ban command. (You can use [player] as a placeholder)\n" +
                         "§7-------------§6CAC - Help§7-------------\n";
                 sender.sendMessage(message);
             }
@@ -131,6 +135,36 @@ public class CacCommand implements CommandExecutor {
             user.setReceivesNotifications(true);
             Utils.sendMessage(p, "You notifications are now enabled.");
         }
+        return true;
+    }
+
+
+    private boolean handleSetup(CommandSender sender, String[] args) {
+        if(sender instanceof Player) {
+            Player p = (Player) sender;
+            if(!p.hasPermission(Permissions.ADMIN)) {
+                Utils.sendNoPerm(p);
+                return false;
+            }
+        }
+
+        StringBuilder commandBuilder = new StringBuilder();
+        for(int i = 0; i < args.length; i++) {
+            if(i != 0) {
+                commandBuilder.append(args[i]).append(" ");
+            }
+        }
+
+        String command = commandBuilder.toString();
+        Config.setBanCommand(command);
+
+        String message = "The ban command was set to §6" + command;
+        if(sender instanceof Player) {
+            Utils.sendMessage(sender, message);
+        } else {
+            Utils.sendMessageToConsole(sender, message);
+        }
+
         return true;
     }
 

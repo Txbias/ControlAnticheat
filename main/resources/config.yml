@@ -18,7 +18,7 @@ autoKick: true
 autoBan: true
 
 # The command that will be executed to ban a player.
-banCommand: /ban [player]
+banCommand: /ban [player] 100d Hacking
 
 # The maximum amount of flags a player is allowed to have per cheat before getting banned.
 maxFlagsPerModule: 15
