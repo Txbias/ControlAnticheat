@@ -30,6 +30,7 @@ Player:
 - /cac info [player] - Shows which cheats were detected.
 - /cac reload - Reloads the config.
 - /cac notify - Toggles your notifications
+- /cac setup [command] - Lets you set the ban command 
 - /ping [player] - Lets you see the ping of yourself or of another player
 
 ### Permissions:
@@ -47,7 +48,7 @@ minTimeBetweenBowShots: 149
 
 # The maximum amount of packets a player is allowed to send per second. If a client sends more packets,
 # all players with the cac.notify permission will be notified.
-maxPackets: 80
+maxPackets: 90
 
 # The maximum ping a player can have to still be checked
 maxPing: 400
@@ -55,17 +56,24 @@ maxPing: 400
 # The maximum range a player is allowed to have when hitting an entity.
 maxCombatRange: 4
 
+# If set to true players will get kicked automatically
+autoKick: true
+
 # If set to true players will get banned automatically.
 autoBan: true
 
 # The command that will be executed to ban a player.
-banCommand: /ban [player]
+banCommand: /ban [player] 100d Hacking
 
 # The maximum amount of flags a player is allowed to have per cheat before getting banned.
 maxFlagsPerModule: 15
 
 # The maximum amount of flags a player is allowed to have before getting banned.
-maxFlagsTotal: 30  
+maxFlagsTotal: 30
+
+# if set to true hacking alerts will also be shown in console
+alertsInConsole: true
+  
 ```
 
 
