@@ -45,7 +45,6 @@ public class NPC_1_12_R1 implements NPC{
         PlayerConnection connection = ((CraftPlayer) p).getHandle().playerConnection;
         Player npcPlayer = getNPC(name);
         if(npcPlayer == null) {
-            System.out.println("NPC not found!");
             return;
         }
         npcPlayers.remove(npcPlayer);

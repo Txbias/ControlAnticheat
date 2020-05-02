@@ -4,6 +4,7 @@ import de.valorit.cac.checks.CheckResultsManager;
 import de.valorit.cac.checks.combat.Killaura;
 import de.valorit.cac.checks.movement.Blink;
 import de.valorit.cac.config.Config;
+import de.valorit.cac.config.Messages;
 import de.valorit.cac.utils.Permissions;
 import de.valorit.cac.utils.Utils;
 import io.netty.channel.Channel;
@@ -64,12 +65,12 @@ public class PacketReader_1_12_R1  implements PacketReader{
             if(packets.size() > Config.getMaxPackets()) {
                 //Player is hacking
                 if(!player.hasPermission(Permissions.BYPASS)) {
-                    Utils.broadCastWarning("The player §c" + player.getName() + " §e is sending to many packets (" + packets.size() + ")!");
+                    Utils.broadCastWarning(Messages.getToManyPackets(player, packets.size()));
                 }
             }
             if(attacksCount >= 23) {
                 if(!player.hasPermission(Permissions.BYPASS)) {
-                    Utils.broadCastWarning("The player §c " + player.getName() + " §e is attacking to many entities (" + attacksCount + ")!");
+                    Utils.broadCastWarning(Messages.getToManyAttacks(player, attacksCount));
                     CheckResultsManager.getUser(player).setCanAttack(false);
                 }
             } else {

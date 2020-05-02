@@ -4,6 +4,7 @@ import de.valorit.cac.checks.CheckResultsManager;
 import de.valorit.cac.commands.CacCommand;
 import de.valorit.cac.commands.PingCommand;
 import de.valorit.cac.config.Config;
+import de.valorit.cac.config.Messages;
 import de.valorit.cac.events.*;
 import de.valorit.cac.version_dependent.VersionManager;
 import org.bukkit.Bukkit;
@@ -30,16 +31,16 @@ public class Main extends JavaPlugin {
         setInstance(this);
 
         if(versionManager.setupNPC()) {
-            System.out.println("CAC is compatible!");
+            System.out.println(Messages.getCompatible());
         } else {
-            System.out.println("The server version is not compatible with CAC!");
-            System.out.println("Shutting down plugin...");
+            System.out.println(Messages.getInCompatible());
 
             pluginManager.disablePlugin(this);
         }
 
 
         Config.loadConfig();
+        Messages.loadMessages();
         saveDefaultConfig();
         resultsManager.handleCheckResults();
     }

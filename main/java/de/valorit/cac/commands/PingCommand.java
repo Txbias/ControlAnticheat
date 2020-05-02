@@ -1,5 +1,6 @@
 package de.valorit.cac.commands;
 
+import de.valorit.cac.config.Messages;
 import de.valorit.cac.utils.Permissions;
 import de.valorit.cac.utils.Utils;
 import de.valorit.cac.version_dependent.VersionManager;
@@ -20,20 +21,20 @@ public class PingCommand implements CommandExecutor {
                 if(p.isOp() || p.hasPermission(Permissions.PING) || p.hasPermission(Permissions.ADMIN)) {
                      if(args.length == 0) {
                          //Player asks for own ping
-                         Utils.sendMessage(p, "Your ping: §6" + VersionManager.getCraftPlayerManager().getPing(p) + "ms");
+                         Utils.sendMessage(p, Messages.getPingInfo(VersionManager.getCraftPlayerManager().getPing(p)));
                          return true;
                      } else if(args.length == 1) {
                          //Player asks for the ping of other player
                          Player target = Bukkit.getPlayer(args[0]);
                          if(target == null) {
-                             Utils.sendError(p, "The player §6" + args[0] + "§c is not online!");
+                             Utils.sendError(p, Messages.getNotOnline(args[0]));
                              return false;
                          }
 
-                         Utils.sendMessage(p, args[0] + "'s ping: §6" +  VersionManager.getCraftPlayerManager().getPing(target) + "ms");
+                         Utils.sendMessage(p, Messages.getPingInfoPlayer(target, VersionManager.getCraftPlayerManager().getPing(target)));
                          return true;
                      } else {
-                         Utils.sendError(p, "Usage: /ping <Player>");
+                         Utils.sendError(p, Messages.getUsagePing());
                          return false;
                      }
                 } else {
@@ -43,17 +44,17 @@ public class PingCommand implements CommandExecutor {
             } else {
                 //Command executed by console
                 if(args.length != 1) {
-                    Utils.sendError(sender, "You need to be a player to be able to request your ping!");
+                    Utils.sendError(sender, Messages.getNoConsole());
                     return false;
                 }
 
                 Player target = Bukkit.getPlayer(args[0]);
                 if(target == null) {
-                    Utils.sendError(sender, "The player §6" + args[0] + "§c is not online!");
+                    Utils.sendError(sender, Messages.getNotOnline(args[0]));
                     return false;
                 }
 
-                Utils.sendMessage(sender, args[0] + "s ping: §6" + VersionManager.getCraftPlayerManager().getPing(target) + "ms");
+                Utils.sendMessage(sender, Messages.getPingInfoPlayer(target, VersionManager.getCraftPlayerManager().getPing(target)));
                 return true;
             }
         }

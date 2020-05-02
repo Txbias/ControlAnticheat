@@ -56,7 +56,6 @@ public class VersionManager {
         } else if(version.equals(VERSION_1_12_R1)) {
             return new PacketReader_1_12_R1();
         }
-        System.out.println("Invalid version!");
         return packetReader;
     }
 

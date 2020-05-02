@@ -2,6 +2,7 @@ package de.valorit.cac.checks;
 
 import de.valorit.cac.Main;
 import de.valorit.cac.config.Config;
+import de.valorit.cac.config.Messages;
 import de.valorit.cac.utils.GameEvent;
 import de.valorit.cac.utils.User;
 import de.valorit.cac.utils.Utils;
@@ -94,7 +95,7 @@ public class CheckResultsManager {
         Bukkit.getScheduler().runTask(Main.getInstance(), () -> {
             ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
             Bukkit.dispatchCommand(console, prepareBanCommand(p, banCommand));
-            Utils.broadCastMessage("The player §6" + p.getName() + "§7 was banned.");
+            Utils.broadCastMessage(Messages.getBanBroadcast(p));
         });
     }
 

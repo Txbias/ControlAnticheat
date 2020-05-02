@@ -2,6 +2,7 @@ package de.valorit.cac.commands;
 
 import de.valorit.cac.checks.CheckResultsManager;
 import de.valorit.cac.config.Config;
+import de.valorit.cac.config.Messages;
 import de.valorit.cac.utils.Permissions;
 import de.valorit.cac.utils.User;
 import de.valorit.cac.utils.Utils;
@@ -41,13 +42,7 @@ public class CacCommand implements CommandExecutor {
                     }
                 }
 
-                String message = "§7-------------§6CAC - Help§7-------------\n" +
-                        "§6/cac info [name]§7: Shows which cheats were detected for a player\n" +
-                        "§6/cac reload§7: Reloads the config\n" +
-                        "§6/cac notify§7: Toggles your notifications\n" +
-                        "§6/cac setup [ban command]§7: Lets you set the ban command. (You can use [player] as a placeholder)\n" +
-                        "§7-------------§6CAC - Help§7-------------\n";
-                sender.sendMessage(message);
+                sender.sendMessage(Messages.getCacCommandInfo());
             }
         }
         return false;
@@ -90,7 +85,7 @@ public class CacCommand implements CommandExecutor {
         }
 
         if(detectedCheats == 0) {
-            Utils.sendMessage(sender, "The player §6" + target.getName() + "§7 wasn't detected for any cheats!");
+            Utils.sendMessage(sender, Messages.getNoCheats(user.getPlayer()));
             return true;
         }
 
@@ -111,7 +106,8 @@ public class CacCommand implements CommandExecutor {
         }
 
         Config.reloadConfig();
-        Utils.sendMessage(sender, "Config reloaded.");
+        Messages.reloadMessages();
+        Utils.sendMessage(sender, Messages.getConfigReloaded());
 
         return true;
     }
@@ -119,7 +115,7 @@ public class CacCommand implements CommandExecutor {
 
     private boolean handleNotify(CommandSender sender, String[] args){
         if(!(sender instanceof Player)) {
-            Utils.sendMessageToConsole(sender, "You need to be a player to be able to do that!");
+            Utils.sendMessageToConsole(sender, Messages.getNoConsole());
             return false;
         }
         Player p = (Player) sender;
@@ -130,10 +126,10 @@ public class CacCommand implements CommandExecutor {
         User user = CheckResultsManager.getUser(p);
         if(user.isReceivesNotifications()) {
             user.setReceivesNotifications(false);
-            Utils.sendMessage(p, "You notifications are now disabled.");
+            Utils.sendMessage(p, Messages.getNotificationsDisabled());
         } else {
             user.setReceivesNotifications(true);
-            Utils.sendMessage(p, "You notifications are now enabled.");
+            Utils.sendMessage(p, Messages.getNotificationsEnabled());
         }
         return true;
     }
@@ -158,7 +154,7 @@ public class CacCommand implements CommandExecutor {
         String command = commandBuilder.toString();
         Config.setBanCommand(command);
 
-        String message = "The ban command was set to §6" + command;
+        String message = Messages.getBanCommandSet(command);
         if(sender instanceof Player) {
             Utils.sendMessage(sender, message);
         } else {
