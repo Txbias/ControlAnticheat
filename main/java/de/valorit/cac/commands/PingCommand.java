@@ -2,7 +2,7 @@ package de.valorit.cac.commands;
 
 import de.valorit.cac.utils.Permissions;
 import de.valorit.cac.utils.Utils;
-import de.valorit.cac.utils.version_dependent.VersionManager;
+import de.valorit.cac.version_dependent.VersionManager;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;

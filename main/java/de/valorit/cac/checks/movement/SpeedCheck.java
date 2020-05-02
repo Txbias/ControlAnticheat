@@ -1,12 +1,12 @@
 package de.valorit.cac.checks.movement;
 
-import de.valorit.cac.User;
 import de.valorit.cac.checks.CheckResult;
 import de.valorit.cac.checks.CheckResultsManager;
 import de.valorit.cac.checks.Module;
 import de.valorit.cac.utils.Permissions;
 import de.valorit.cac.utils.PlayerUtils;
-import de.valorit.cac.utils.version_dependent.VersionManager;
+import de.valorit.cac.utils.User;
+import de.valorit.cac.version_dependent.VersionManager;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;

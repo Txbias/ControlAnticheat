@@ -1,10 +1,9 @@
 package de.valorit.cac.utils;
 
-import de.valorit.cac.Config;
-import de.valorit.cac.User;
 import de.valorit.cac.checks.CheckResult;
 import de.valorit.cac.checks.CheckResultsManager;
-import de.valorit.cac.utils.version_dependent.VersionManager;
+import de.valorit.cac.config.Config;
+import de.valorit.cac.version_dependent.VersionManager;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;

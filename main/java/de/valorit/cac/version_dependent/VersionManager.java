@@ -1,16 +1,16 @@
-package de.valorit.cac.utils.version_dependent;
+package de.valorit.cac.version_dependent;
 
 import de.valorit.cac.Main;
-import de.valorit.cac.utils.version_dependent.events.GlideEvent;
-import de.valorit.cac.utils.version_dependent.packets.craftplayer.CraftPlayerManager;
-import de.valorit.cac.utils.version_dependent.packets.craftplayer.CraftPlayerManager_1_12_R1;
-import de.valorit.cac.utils.version_dependent.packets.craftplayer.CraftPlayerManager_1_8_R3;
-import de.valorit.cac.utils.version_dependent.packets.npc.NPC;
-import de.valorit.cac.utils.version_dependent.packets.npc.NPC_1_12_R1;
-import de.valorit.cac.utils.version_dependent.packets.npc.NPC_1_8_R3;
-import de.valorit.cac.utils.version_dependent.packets.packetreader.PacketReader;
-import de.valorit.cac.utils.version_dependent.packets.packetreader.PacketReader_1_12_R1;
-import de.valorit.cac.utils.version_dependent.packets.packetreader.PacketReader_1_8_R3;
+import de.valorit.cac.version_dependent.events.GlideEvent;
+import de.valorit.cac.version_dependent.packets.craftplayer.CraftPlayerManager;
+import de.valorit.cac.version_dependent.packets.craftplayer.CraftPlayerManager_1_12_R1;
+import de.valorit.cac.version_dependent.packets.craftplayer.CraftPlayerManager_1_8_R3;
+import de.valorit.cac.version_dependent.packets.npc.NPC;
+import de.valorit.cac.version_dependent.packets.npc.NPC_1_12_R1;
+import de.valorit.cac.version_dependent.packets.npc.NPC_1_8_R3;
+import de.valorit.cac.version_dependent.packets.packetreader.PacketReader;
+import de.valorit.cac.version_dependent.packets.packetreader.PacketReader_1_12_R1;
+import de.valorit.cac.version_dependent.packets.packetreader.PacketReader_1_8_R3;
 
 public class VersionManager {
 

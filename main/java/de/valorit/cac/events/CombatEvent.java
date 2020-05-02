@@ -1,7 +1,6 @@
 package de.valorit.cac.events;
 
 import de.valorit.cac.Main;
-import de.valorit.cac.User;
 import de.valorit.cac.checks.CheckResult;
 import de.valorit.cac.checks.CheckResultsManager;
 import de.valorit.cac.checks.Module;
@@ -9,6 +8,7 @@ import de.valorit.cac.checks.combat.FastBow;
 import de.valorit.cac.checks.combat.Killaura;
 import de.valorit.cac.checks.player.ReachCheck;
 import de.valorit.cac.utils.GameEvent;
+import de.valorit.cac.utils.User;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Creeper;
 import org.bukkit.entity.Player;

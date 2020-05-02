@@ -1,6 +1,5 @@
 package de.valorit.cac.events;
 
-import de.valorit.cac.User;
 import de.valorit.cac.checks.CheckResultsManager;
 import de.valorit.cac.checks.movement.FlightCheck;
 import de.valorit.cac.checks.movement.GlideCheck;
@@ -9,6 +8,7 @@ import de.valorit.cac.checks.movement.WaterWalk;
 import de.valorit.cac.checks.player.InventoryMove;
 import de.valorit.cac.checks.player.NoFall;
 import de.valorit.cac.utils.GameEvent;
+import de.valorit.cac.utils.User;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

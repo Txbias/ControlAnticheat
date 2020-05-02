@@ -1,11 +1,11 @@
 package de.valorit.cac.checks.player;
 
-import de.valorit.cac.User;
 import de.valorit.cac.checks.CheckResult;
 import de.valorit.cac.checks.CheckResultsManager;
 import de.valorit.cac.checks.Module;
 import de.valorit.cac.utils.Permissions;
 import de.valorit.cac.utils.PlayerUtils;
+import de.valorit.cac.utils.User;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerMoveEvent;

@@ -1,10 +1,10 @@
 package de.valorit.cac.checks.player;
 
-import de.valorit.cac.Config;
 import de.valorit.cac.checks.CheckResult;
 import de.valorit.cac.checks.Module;
+import de.valorit.cac.config.Config;
 import de.valorit.cac.utils.Permissions;
-import de.valorit.cac.utils.version_dependent.VersionManager;
+import de.valorit.cac.version_dependent.VersionManager;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;

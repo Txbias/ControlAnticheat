@@ -1,8 +1,8 @@
-package de.valorit.cac.utils.version_dependent.events;
+package de.valorit.cac.version_dependent.events;
 
 import de.valorit.cac.Main;
-import de.valorit.cac.User;
 import de.valorit.cac.checks.CheckResultsManager;
+import de.valorit.cac.utils.User;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

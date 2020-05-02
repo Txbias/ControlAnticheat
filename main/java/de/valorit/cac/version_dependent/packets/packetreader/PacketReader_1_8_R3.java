@@ -1,26 +1,28 @@
-package de.valorit.cac.utils.version_dependent.packets.packetreader;
+package de.valorit.cac.version_dependent.packets.packetreader;
 
-import de.valorit.cac.Config;
 import de.valorit.cac.checks.CheckResultsManager;
 import de.valorit.cac.checks.combat.Killaura;
 import de.valorit.cac.checks.movement.Blink;
+import de.valorit.cac.config.Config;
 import de.valorit.cac.utils.Permissions;
 import de.valorit.cac.utils.Utils;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToMessageDecoder;
-import net.minecraft.server.v1_12_R1.Packet;
-import net.minecraft.server.v1_12_R1.PacketPlayInCloseWindow;
-import net.minecraft.server.v1_12_R1.PacketPlayInFlying;
-import net.minecraft.server.v1_12_R1.PacketPlayInUseEntity;
-import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
+import net.minecraft.server.v1_8_R3.Packet;
+import net.minecraft.server.v1_8_R3.PacketPlayInCloseWindow;
+import net.minecraft.server.v1_8_R3.PacketPlayInFlying;
+import net.minecraft.server.v1_8_R3.PacketPlayInUseEntity;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
-public class PacketReader_1_12_R1  implements PacketReader{
+
+public class PacketReader_1_8_R3 implements PacketReader{
 
     private Player player;
     private Channel channel;
@@ -32,11 +34,13 @@ public class PacketReader_1_12_R1  implements PacketReader{
     private ArrayList<String> packets = new ArrayList<>();
     private int attacksCount = 0;
 
+    private boolean toManyPackets = false;
+
+
     @Override
     public void inject(Player p) {
         this.player = p;
         injectorName = p.getName();
-
         this.blink = new Blink();
 
         CraftPlayer cPlayer = (CraftPlayer) player;
@@ -45,17 +49,22 @@ public class PacketReader_1_12_R1  implements PacketReader{
 
             @Override
             protected void decode(ChannelHandlerContext channelHandlerContext, Packet<?> packet, List<Object> list) throws Exception {
-                list.add(packet);
-                PacketReader_1_12_R1.packet = packet;
+                if(!toManyPackets) {
+                    list.add(packet);
+                }
+                PacketReader_1_8_R3.packet = packet;
                 readPacket();
             }
 
         });
+
     }
 
     long lastClear = System.currentTimeMillis();
     @Override
     public void readPacket() {
+
+
         String name = packet.getClass().getSimpleName();
 
         packets.add(name);
@@ -65,6 +74,23 @@ public class PacketReader_1_12_R1  implements PacketReader{
                 //Player is hacking
                 if(!player.hasPermission(Permissions.BYPASS)) {
                     Utils.broadCastWarning("The player §c" + player.getName() + " §e is sending to many packets (" + packets.size() + ")!");
+                    HashMap<String, Integer> packetCount = new HashMap<>();
+
+
+
+                    for(String s : packets) {
+                        if(!packetCount.containsKey(s)) {
+                            packetCount.put(s, 1);
+                        } else {
+                            int old = packetCount.get(s);
+                            packetCount.replace(s, old + 1);
+                        }
+                    }
+
+                    for(String s : packetCount.keySet()) {
+                        System.out.println(s + ": " + packetCount.get(s));
+                    }
+
                 }
             }
             if(attacksCount >= 23) {
@@ -75,20 +101,20 @@ public class PacketReader_1_12_R1  implements PacketReader{
             } else {
                 CheckResultsManager.getUser(player).setCanAttack(true);
             }
-            attacksCount = 0;
             packets.clear();
             lastClear = System.currentTimeMillis();
+            attacksCount = 0;
         }
 
-
         if(packet instanceof PacketPlayInUseEntity) {
-            PacketPlayInUseEntity packetPlayInUseEntity = (PacketPlayInUseEntity) packet;
-            int id = (int) getValue(packetPlayInUseEntity, "a");
-            String use = getValue(packetPlayInUseEntity, "action").toString();
+            PacketPlayInUseEntity playInUseEntity = (PacketPlayInUseEntity) packet;
+            int id = (int) getValue(playInUseEntity, "a");
+            String use = getValue(playInUseEntity, "action").toString();
 
             if(use != null) {
                 if(use.equalsIgnoreCase("ATTACK")) {
                     Killaura.performCheck(id, player);
+
                     attacksCount++;
                 }
             }
@@ -98,7 +124,6 @@ public class PacketReader_1_12_R1  implements PacketReader{
             blink.performCheck(player);
         }
     }
-
 
     @Override
     public void uninject() {
@@ -113,20 +138,21 @@ public class PacketReader_1_12_R1  implements PacketReader{
             Field field = obj.getClass().getDeclaredField(name);
             field.setAccessible(true);
             field.set(obj, value);
-        } catch (IllegalAccessException | NoSuchFieldException e) {
+        } catch (NoSuchFieldException | IllegalAccessException e) {
             e.printStackTrace();
+            System.out.println(obj.getClass());
         }
     }
 
-
     @Override
-    public Object getValue(Object obj, String name) {
+    public Object getValue(Object obj, String name){
         try {
             Field field = obj.getClass().getDeclaredField(name);
             field.setAccessible(true);
             return field.get(obj);
         } catch (IllegalAccessException | NoSuchFieldException e) {
             e.printStackTrace();
+            System.out.println(obj.getClass());
         }
         return null;
     }

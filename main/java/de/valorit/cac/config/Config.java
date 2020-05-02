@@ -1,5 +1,6 @@
-package de.valorit.cac;
+package de.valorit.cac.config;
 
+import de.valorit.cac.Main;
 import de.valorit.cac.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.InvalidConfigurationException;

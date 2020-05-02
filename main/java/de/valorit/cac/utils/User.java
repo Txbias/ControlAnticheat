@@ -1,10 +1,9 @@
-package de.valorit.cac;
+package de.valorit.cac.utils;
 
 import de.valorit.cac.checks.Module;
-import de.valorit.cac.utils.Permissions;
-import de.valorit.cac.utils.Settings;
-import de.valorit.cac.utils.version_dependent.VersionManager;
-import de.valorit.cac.utils.version_dependent.packets.packetreader.PacketReader;
+import de.valorit.cac.config.Settings;
+import de.valorit.cac.version_dependent.VersionManager;
+import de.valorit.cac.version_dependent.packets.packetreader.PacketReader;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;

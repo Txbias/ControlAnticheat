@@ -1,6 +1,8 @@
-package de.valorit.cac.utils;
+package de.valorit.cac.config;
 
 import de.valorit.cac.checks.CheckResultsManager;
+import de.valorit.cac.utils.Permissions;
+import de.valorit.cac.utils.Utils;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 

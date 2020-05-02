@@ -1,9 +1,9 @@
 package de.valorit.cac.checks;
 
-import de.valorit.cac.Config;
 import de.valorit.cac.Main;
-import de.valorit.cac.User;
+import de.valorit.cac.config.Config;
 import de.valorit.cac.utils.GameEvent;
+import de.valorit.cac.utils.User;
 import de.valorit.cac.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.ConsoleCommandSender;
