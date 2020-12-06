@@ -1,5 +1,5 @@
 # ControlAnticheat
-The all in one anticheat solution for minecraft servers
+Simple anticheat for minecraft servers
 Warning: This plugin is still in beta. If you encounter a bug, bypass or false flag please report it.
 
 ## Compatibility:
