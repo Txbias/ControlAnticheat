@@ -76,11 +76,3 @@ alertsInConsole: true
   
 ```
 
-
- 
-## Comming soon:
-
--performance improvements
-
--more blocked cheats
-
